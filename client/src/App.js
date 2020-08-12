@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css';
@@ -12,14 +13,20 @@ import '../node_modules/bootstrap-select/dist/css/bootstrap-select.css';
 import '../node_modules/lightbox2/dist/css/lightbox.css';
 import './utils/css/style.default.css';
 
-import Header from './layouts/Header';
-import Footer from './layouts/Footer';
+import Home from './home/Home';
+import About from './about/About';
+import Cart from './cart/Cart';
 
 function App() {
   return (
     <>
-      <Header />
-      <Footer />
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/about-us" component={About} />
+          <Route exact path="/cart" component={Cart} />
+        </Switch>
+      </BrowserRouter>
     </>
   );
 }
