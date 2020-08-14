@@ -6,14 +6,11 @@ import BigProduct from './BigProduct';
 import Products from './Products';
 import Divider from './Divider';
 import NewArrivals from './NewArrivals';
-import Header from '../layouts/Header';
-import Footer from '../layouts/Footer';
 import CartPopup from '../popups/CartPopup';
 
 const Home = () => {
     return (
         <>
-            <Header />
             <Banner />
             <Intro />
             <Features />
@@ -22,7 +19,6 @@ const Home = () => {
             <Divider />
             <NewArrivals />
             <CartPopup />
-            <Footer />
         </>
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import big_product from '../utils/img/big-product.jpg';
+import big_product from '../../utils/img/big-product.jpg';
 
 const BigProduct = () => {
     return (

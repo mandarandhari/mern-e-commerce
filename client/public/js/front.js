@@ -211,21 +211,6 @@ $(document).ready(function () {
     });
 
 
-    // ------------------------------------------------------ //
-    // Contact form validation
-    // ------------------------------------------------------ //
-    $('#contact-form').validate({
-        messages: {
-            name: 'please enter your name',
-            email: 'please enter your email address',
-            number: 'please enter your phone number',
-            people: 'please enter how many people',
-            date: 'please enter booking date',
-            time: 'please enter booking time',
-            request: 'please enter your special request'
-        }
-    });
-
     // ------------------------------------------------------- //
     // shipping form validation
     // ------------------------------------------------------ //

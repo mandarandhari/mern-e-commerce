@@ -12,15 +12,15 @@ const Contact = () => {
                             <form id="contact-form" action="#" method="post">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <label for="username">Your Name</label>
+                                        <label htmlFor="username">Your Name</label>
                                         <input id="username" type="text" name="username" required="" />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="email">Your Email</label>
+                                        <label htmlFor="email">Your Email</label>
                                         <input id="email" type="email" name="email" required="" />
                                     </div>
                                     <div className="col-md-12">
-                                        <label for="message">How can we help you?</label>
+                                        <label htmlFor="message">How can we help you?</label>
                                         <textarea id="message" name="message" required=""></textarea>
                                     </div>
                                     <div className="col-md-12 text-right submit-holder">

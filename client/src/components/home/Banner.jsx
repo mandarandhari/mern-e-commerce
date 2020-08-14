@@ -1,5 +1,5 @@
 import React from 'react';
-import hero_shirt from '../utils/img/hero-shirt.jpg';
+import hero_shirt from '../../utils/img/hero-shirt.jpg';
 
 const Banner = () => {
     return (

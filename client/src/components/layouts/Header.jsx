@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import logo_e from '../utils/img/logo-e.png';
+import logo_e from '../../utils/img/logo-e.png';
+import AuthContext from '../../context/authContext/AuthContext';
 
 const Header = () => {
+    const { isLoggedIn, logoutCustomer } = useContext(AuthContext);
+
+    const logout = () => {
+        logoutCustomer();
+    }
+
     return (
         <>
             <header className="header">
@@ -35,8 +42,32 @@ const Header = () => {
                                 <li>
                                     <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="nav-link langs"><i className="fa fa-cog"></i></a>
                                     <ul className="dropdown-menu">
-                                        <li><a href="#">Login</a></li>
-                                        <li><a href="#">Register</a></li>
+                                    {(
+                                        () => {
+                                            return !isLoggedIn ? (
+                                                <>
+                                                    <li className="list-inline-item mr-0" style={{ width: '100%' }}>
+                                                        <a href="#" data-target="#login-popup" className="expand">Login</a>
+                                                    </li>
+                                                    <li className="list-inline-item" style={{ width: '100%' }}>
+                                                        <a href="#" data-target="#register-popup" className="expand">Register</a>
+                                                    </li>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <li className="list-inline-item mr-0" style={{ width: '100%' }}>
+                                                        <a href="#">My Account</a>
+                                                    </li>
+                                                    <li className="list-inline-item" style={{ width: '100%' }}>
+                                                        <a href="#">My Orders</a>
+                                                    </li>
+                                                    <li className="list-inline-item" style={{ width: '100%' }}>
+                                                        <a href="#" onClick={logout}>Logout</a>
+                                                    </li>
+                                                </>
+                                            )
+                                        }
+                                    )()}
                                     </ul>
                                 </li>
                                 <li>

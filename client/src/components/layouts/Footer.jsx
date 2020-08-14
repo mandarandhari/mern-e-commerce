@@ -1,6 +1,6 @@
 import React from 'react';
-import logo_e_footer from '../utils/img/logo-e-footer.png';
-import template_mac from '../utils/img/template-mac.png';
+import logo_e_footer from '../../utils/img/logo-e-footer.png';
+import template_mac from '../../utils/img/template-mac.png';
 
 const Footer = () => {
     return (
