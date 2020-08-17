@@ -1,23 +1,75 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
+import AuthContext from '../../context/authContext/AuthContext';
 
 const Login = () => {
+    const { loginCustomer, loginFormErrors, showLoginPopup, hideLogin } = useContext(AuthContext);
+
+    const [userdata, setUserdata] = useState({
+        useremail: '',
+        password: ''
+    });
+
+    const handleChange = e => {
+        setUserdata({
+            ...userdata,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    const formSubmit = async e => {
+        e.preventDefault();
+
+        await loginCustomer(userdata);
+
+        hideLogin();
+    }
+
+    const closeBtnClicked = e => {
+        e.preventDefault();
+
+        hideLogin();
+    }
+
     return (
         <>
-            <div id="login-popup" className="cart-popup-overlay">
-                <div className="cart-popup">
+            <div id="login-popup" className={ showLoginPopup ? `cart-popup-overlay active` : `cart-popup-overlay` } style={ showLoginPopup ? { display: 'block' } : { display: 'none' }}>
+                <div className={ showLoginPopup ? `cart-popup fade-in-up active` : `cart-popup` }>
                     <div className="container">
-                        <div className="close-btn"><i className="fa fa-times"></i></div>
+                        <div className="close-btn" onClick={closeBtnClicked}><i className="fa fa-times"></i></div>
                         <div className="login-main">
                             <h3 className="text-center">Login</h3>
-                            <form>
+                            <form onSubmit={formSubmit}>
                                 <div className="row">
                                     <div className="col-sm-8 m-auto">
                                         <div className="row">
+                                            {(
+                                                () => {
+                                                    return loginFormErrors.invalid && loginFormErrors.invalid.length ?
+                                                    <div className="col-sm-12">
+                                                        <div className="alert alert-danger mb-0">
+                                                            <p className="text-danger mb-0">{loginFormErrors.invalid}</p>
+                                                        </div>
+                                                    </div>
+                                                    :
+                                                    null
+                                                }
+                                            )()}
                                             <div className="col-sm-12 mt-4">
-                                                <input type="email" name="useremail" placeholder="Email Address" required="" className="form-control" />
+                                                <input type="email" name="useremail" placeholder="Email Address" required="" className="form-control" value={userdata.email} onChange={handleChange} />
+                                                {(
+                                                    () => {
+                                                        return loginFormErrors.email && loginFormErrors.email.length ? <p className="text-danger mt-1 mb-0">{loginFormErrors.email}</p> : null
+                                                    }
+                                                )()}
                                             </div>
                                             <div className="col-sm-12 mt-3">
-                                                <input type="password" name="password" placeholder="Password" required="" className="form-control" />
+                                                <input type="password" name="password" placeholder="Password" required="" className="form-control" value={userdata.password} onChange={handleChange} />
+                                                {(
+                                                    () => {
+                                                        return loginFormErrors.password && loginFormErrors.password.length ? <p className="text-danger mb-0 mt-1">{loginFormErrors.password}</p> : null
+                                                    }
+                                                )
+                                                ()}
                                             </div>
                                             <div className="col-sm-12 mt-3 text-center">
                                                 <button id="login-submit" type="submit" className="btn btn-primary btn-template btn-lg">Login</button>

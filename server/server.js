@@ -7,9 +7,10 @@ connectDB();
 
 app.use(express.json({ extended: true }));
 
-app.use('/customer/register', require('./routes/customers/register'));
-app.use('/customer/login', require('./routes/customers/login'));
-app.use('/customer/checkValidEmail', require('./routes/customers/checkValidEmail'));
+app.use('/register', require('./routes/customers/register'));
+app.use('/login', require('./routes/customers/login'));
+app.use('/customer', require('./routes/customers/customer'));
+app.use('/profile', require('./routes/customers/profile'));
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server started at port ${port}`));

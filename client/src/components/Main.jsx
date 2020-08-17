@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Home from './home/Home';
 import About from './about/About';
@@ -7,9 +7,19 @@ import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import Login from './auth/Login';
 import Register from './auth/Register';
+import AuthContext from '../context/authContext/AuthContext';
+import Profile from './auth/Profile';
 
 const Main = () => {
+    const { getCustomer, isLoggedIn } = useContext(AuthContext);
+
     const location = useLocation();
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            getCustomer();
+        }
+    }, []);
 
     return (
         <>
@@ -33,8 +43,17 @@ const Main = () => {
                     )()
                 }
             <Footer />
-            <Login />
-            <Register />
+            {(
+                () => {
+                    return !isLoggedIn ?
+                    <>
+                        <Login />
+                        <Register />
+                    </> :
+                    <Profile />
+                }
+            )()}
+
         </>
     )
 }

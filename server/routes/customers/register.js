@@ -56,13 +56,11 @@ router.post(
                 }, process.env.SECRET);
 
                 return res.status(200).json({
-                    status: true,
-                    msg: 'Customer created',
                     token: token,
                     customer: {
-                        _id: customer._id,
-                        first_name: customer.first_name,
-                        last_name: customer.last_name,
+                        id: customer._id,
+                        firstName: customer.first_name,
+                        lastName: customer.last_name,
                         email: customer.email,
                         phone: customer.phone,
                         created_at: customer.created_at

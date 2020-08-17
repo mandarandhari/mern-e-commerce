@@ -4,11 +4,7 @@ import logo_e from '../../utils/img/logo-e.png';
 import AuthContext from '../../context/authContext/AuthContext';
 
 const Header = () => {
-    const { isLoggedIn, logoutCustomer } = useContext(AuthContext);
-
-    const logout = () => {
-        logoutCustomer();
-    }
+    const { isLoggedIn, logoutCustomer, showLogin, showRegister, showProfile } = useContext(AuthContext);
 
     return (
         <>
@@ -47,22 +43,22 @@ const Header = () => {
                                             return !isLoggedIn ? (
                                                 <>
                                                     <li className="list-inline-item mr-0" style={{ width: '100%' }}>
-                                                        <a href="#" data-target="#login-popup" className="expand">Login</a>
+                                                        <a href="#" className="expand" onClick={() => showLogin()}>Login</a>
                                                     </li>
                                                     <li className="list-inline-item" style={{ width: '100%' }}>
-                                                        <a href="#" data-target="#register-popup" className="expand">Register</a>
+                                                        <a href="#" className="expand" onClick={() => showRegister()}>Register</a>
                                                     </li>
                                                 </>
                                             ) : (
                                                 <>
                                                     <li className="list-inline-item mr-0" style={{ width: '100%' }}>
-                                                        <a href="#">My Account</a>
+                                                        <a href="#" className="expand" onClick={() => showProfile()}>My Account</a>
                                                     </li>
                                                     <li className="list-inline-item" style={{ width: '100%' }}>
                                                         <a href="#">My Orders</a>
                                                     </li>
                                                     <li className="list-inline-item" style={{ width: '100%' }}>
-                                                        <a href="#" onClick={logout}>Logout</a>
+                                                        <a href="#" onClick={() => logoutCustomer()}>Logout</a>
                                                     </li>
                                                 </>
                                             )

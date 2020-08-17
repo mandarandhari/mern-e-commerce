@@ -210,47 +210,6 @@ $(document).ready(function () {
         $('body').css('overflow', 'auto');
     });
 
-
-    // ------------------------------------------------------- //
-    // shipping form validation
-    // ------------------------------------------------------ //
-    $('#shipping-address-form').validate({
-        messages: {
-            firstname: 'please enter your first name',
-            lastname: 'please enter your last name',
-            email: 'please enter your email address',
-            number: 'please enter your phone number',
-            address: 'please enter your address',
-            city: 'please enter your city',
-            country: 'please enter your country',
-            postalcode: 'please enter your postal code',
-            region: 'please enter your region',
-            sfirstname: 'please enter your first name',
-            slastname: 'please enter your last name',
-            semail: 'please enter your email address',
-            snumber: 'please enter your phone number',
-            saddress: 'please enter your address',
-            scity: 'please enter your city',
-            scountry: 'please enter your country',
-            spostalcode: 'please enter your postal code',
-            sregion: 'please enter your region',
-            cardname: 'please enter your card name',
-            cardnumber: 'please enter your card number',
-            expirymonth: 'please enter expiry month',
-            expiryyear: 'please enter expiry year',
-            cvv: 'please enter your card CVV number'
-        },
-        rules: {
-            country: {
-                selectcheck: true
-            }
-        }
-    });
-
-    jQuery.validator.addMethod('selectcheck', function (value) {
-        return (value !== '0');
-    });
-
     // ------------------------------------------------------- //
     // Alternative form show/hide
     // ------------------------------------------------------ //
