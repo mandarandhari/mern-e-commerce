@@ -69,20 +69,20 @@ $(document).ready(function () {
     // ------------------------------------------------------- //
     // Parallax effect on divider section
     // ------------------------------------------------------ //
-    $(window).scroll(function () {
+    // $(window).scroll(function () {
 
-        var scroll = $(this).scrollTop();
+    //     var scroll = $(this).scrollTop();
 
-        if ($(window).width() > 1250) {
-            $('section.divider').css({
-                'background-position': 'left -' + scroll / 6 + 'px'
-            });
-        } else {
-            $('section.divider').css({
-                'background-position': 'center bottom'
-            });
-        }
-    });
+    //     if ($(window).width() > 1250) {
+    //         $('section.divider').css({
+    //             'background-position': 'left -' + scroll / 6 + 'px'
+    //         });
+    //     } else {
+    //         $('section.divider').css({
+    //             'background-position': 'center bottom'
+    //         });
+    //     }
+    // });
 
     // ------------------------------------------------------- //
     // Testimonials Slider
@@ -103,36 +103,6 @@ $(document).ready(function () {
             },
             1000: {
                 items: 1,
-                nav: true,
-                loop: false
-            }
-        }
-    });
-
-    // ------------------------------------------------------- //
-    // Products Slider
-    // ------------------------------------------------------ //
-    $('.products-slider').owlCarousel({
-        loop: true,
-        margin: 20,
-        dots: false,
-        nav: true,
-        navText: [
-            "<i class='fa fa-angle-left'></i>",
-            "<i class='fa fa-angle-right'></i>"
-        ],
-        responsiveClass: true,
-        responsive: {
-            0: {
-                items: 1,
-                nav: true
-            },
-            600: {
-                items: 3,
-                nav: false
-            },
-            1000: {
-                items: 4,
                 nav: true,
                 loop: false
             }
@@ -173,42 +143,42 @@ $(document).ready(function () {
     // ------------------------------------------------------- //
     // Add to cart popup
     // ------------------------------------------------------ //
-    $('a.expand').click(function (event) {
-        event.preventDefault();
-        $('body').css('overflow', 'hidden');
+    // $('a.expand').click(function (event) {
+    //     event.preventDefault();
+    //     $('body').css('overflow', 'hidden');
 
-        var popupId = $(this).attr('data-target'),
-            popUpOverlay = $(popupId),
-            popUpWindow = popUpOverlay.find('.cart-popup');
+    //     var popupId = $(this).attr('data-target'),
+    //         popUpOverlay = $(popupId),
+    //         popUpWindow = popUpOverlay.find('.cart-popup');
 
-        popUpOverlay.fadeIn();
-        popUpOverlay.addClass('active');
+    //     popUpOverlay.fadeIn();
+    //     popUpOverlay.addClass('active');
 
-        // This part is only for demo purposes, delete for production
+    //     // This part is only for demo purposes, delete for production
 
-        var source = $(this).parents('.item-image').find('img').attr('src'),
-            name = $(this).parents('.item-image').siblings('.item-info').find('h5').text(),
-            price = $(this).parents('.item-image').siblings('.item-info').find('li.current').text(),
-            popupProfile = $('.cart-popup .item-profile img');
+    //     var source = $(this).parents('.item-image').find('img').attr('src'),
+    //         name = $(this).parents('.item-image').siblings('.item-info').find('h5').text(),
+    //         price = $(this).parents('.item-image').siblings('.item-info').find('li.current').text(),
+    //         popupProfile = $('.cart-popup .item-profile img');
 
 
-        popupProfile.attr('src', source);
-        popUpWindow.find('.item-info h2').text(name);
-        popUpWindow.find('.item-info li.price').text(price);
+    //     popupProfile.attr('src', source);
+    //     popUpWindow.find('.item-info h2').text(name);
+    //     popUpWindow.find('.item-info li.price').text(price);
 
-        // Delete until here
+    //     // Delete until here
 
-        setTimeout(function () {
-            popUpWindow.addClass('fade-in-up').addClass('active');
-        }, 200);
-    });
+    //     setTimeout(function () {
+    //         popUpWindow.addClass('fade-in-up').addClass('active');
+    //     }, 200);
+    // });
 
-    $('.cart-popup-overlay .close-btn').click(function () {
+    // $('.cart-popup-overlay .close-btn').click(function () {
 
-        $('.cart-popup-overlay.active').fadeOut().removeClass('active');
-        $('.cart-popup.active').removeClass('fade-in-up').removeClass('active');
-        $('body').css('overflow', 'auto');
-    });
+    //     $('.cart-popup-overlay.active').fadeOut().removeClass('active');
+    //     $('.cart-popup.active').removeClass('fade-in-up').removeClass('active');
+    //     $('body').css('overflow', 'auto');
+    // });
 
     // ------------------------------------------------------- //
     // Alternative form show/hide

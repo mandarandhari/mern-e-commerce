@@ -13,10 +13,11 @@
     "lightbox2": "^2.11.3",
     "owl.carousel": "^2.3.4",
     "react": "^16.13.1",
-    "react-bootstrap-sweetalert": "^5.2.0",
     "react-dom": "^16.13.1",
+    "react-owl-carousel": "^2.3.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.3"
+    "react-scripts": "^3.4.3",
+    "sweetalert2": "^9.17.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -39,5 +40,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:4000"
 }

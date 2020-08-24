@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import AuthContext from '../../context/authContext/AuthContext';
 
 const Login = () => {
@@ -8,6 +8,26 @@ const Login = () => {
         useremail: '',
         password: ''
     });
+
+    useEffect(() => {
+        if (showLoginPopup) {
+            document.getElementById('login-popup').classList.add('active');
+            document.getElementById('login-popup').style.display = 'block';
+
+            setTimeout(() => {
+                document.getElementById('login-popup-main').classList.add('active');
+                document.getElementById('login-popup-main').classList.add('fade-in-up');
+            }, 200)
+        } else {
+            document.getElementById('login-popup').classList.remove('active');
+            document.getElementById('login-popup').style.display = 'none';
+
+            setTimeout(() => {
+                document.getElementById('login-popup-main').classList.remove('fade-in-up');
+                document.getElementById('login-popup-main').classList.remove('active');
+            }, 200)
+        }
+    }, [showLoginPopup]);
 
     const handleChange = e => {
         setUserdata({
@@ -20,8 +40,6 @@ const Login = () => {
         e.preventDefault();
 
         await loginCustomer(userdata);
-
-        hideLogin();
     }
 
     const closeBtnClicked = e => {
@@ -32,8 +50,8 @@ const Login = () => {
 
     return (
         <>
-            <div id="login-popup" className={ showLoginPopup ? `cart-popup-overlay active` : `cart-popup-overlay` } style={ showLoginPopup ? { display: 'block' } : { display: 'none' }}>
-                <div className={ showLoginPopup ? `cart-popup fade-in-up active` : `cart-popup` }>
+            <div id="login-popup" className='cart-popup-overlay'>
+                <div id="login-popup-main" className='cart-popup'>
                     <div className="container">
                         <div className="close-btn" onClick={closeBtnClicked}><i className="fa fa-times"></i></div>
                         <div className="login-main">

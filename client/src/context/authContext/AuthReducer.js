@@ -25,7 +25,8 @@ export default (state, action) => {
                 ...state,
                 isLoggedIn: !!localStorage.getItem('token'),
                 customer: action.payload.customer.customer,
-                registerFormErrors: action.payload.errors
+                registerFormErrors: action.payload.errors,
+                showRegisterPopup: false
             }
 
         case CUSTOMER_REGISTER_FAILED:
@@ -41,7 +42,8 @@ export default (state, action) => {
                 ...state,
                 isLoggedIn: !!localStorage.getItem('token'),
                 customer: action.payload.customer.customer,
-                loginFormErrors: action.payload.errors
+                loginFormErrors: action.payload.errors,
+                showLoginPopup: false
             }
 
         case CUSTOMER_LOGIN_FAILED:

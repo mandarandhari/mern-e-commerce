@@ -15,18 +15,21 @@ import './utils/css/style.default.css';
 
 import Main from './components/Main';
 import AuthState from './context/authContext/AuthState';
+import ProductState from './context/productContext/ProductState';
 
 function App() {
   return (
     <>
       <AuthState>
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/" component={Main} />
-            <Route exact path="/about-us" component={Main} />
-            <Route exact path="/cart" component={Main} />
-          </Switch>
-        </BrowserRouter>
+        <ProductState>
+          <BrowserRouter>
+            <Switch>
+              <Route exact path="/" component={Main} />
+              <Route exact path="/about-us" component={Main} />
+              <Route exact path="/cart" component={Main} />
+            </Switch>
+          </BrowserRouter>
+        </ProductState>
       </AuthState>
     </>
   );

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import AuthContext from '../../context/authContext/AuthContext';
 
 const Register = () => {
@@ -13,6 +13,26 @@ const Register = () => {
         confirmPassword: ''
     });
 
+    useEffect(() => {
+        if (showRegisterPopup) {
+            document.getElementById('register-popup').classList.add('active');
+            document.getElementById('register-popup').style.display = 'block';
+
+            setTimeout(() => {
+                document.getElementById('register-popup-main').classList.add('active');
+                document.getElementById('register-popup-main').classList.add('fade-in-up');
+            }, 200)
+        } else {
+            document.getElementById('register-popup').classList.remove('active');
+            document.getElementById('register-popup').style.display = 'none';
+
+            setTimeout(() => {
+                document.getElementById('register-popup-main').classList.remove('fade-in-up');
+                document.getElementById('register-popup-main').classList.remove('active');
+            }, 200)
+        }
+    }, [showRegisterPopup])
+
     const handleChange = e => {
         setUserdata({
             ...userdata,
@@ -24,14 +44,12 @@ const Register = () => {
         e.preventDefault();
 
         await registerCustomer(userdata);
-
-        hideRegister();
     }
 
     return (
         <>
-            <div id="register-popup" className={ showRegisterPopup ? `cart-popup-overlay active` : `cart-popup-overlay`} style={ showRegisterPopup ? {display: 'block'} : {display: 'none'} }>
-                <div className={ showRegisterPopup ? `cart-popup fade-in-up active` : `cart-popup`}>
+            <div id="register-popup" className='cart-popup-overlay'>
+                <div id="register-popup-main" className='cart-popup'>
                     <div className="container">
                         <div className="close-btn" onClick={() => hideRegister()}><i className="fa fa-times"></i></div>
                         <div className="register-main">

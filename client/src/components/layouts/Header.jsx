@@ -43,16 +43,16 @@ const Header = () => {
                                             return !isLoggedIn ? (
                                                 <>
                                                     <li className="list-inline-item mr-0" style={{ width: '100%' }}>
-                                                        <a href="#" className="expand" onClick={() => showLogin()}>Login</a>
+                                                        <a href="#" className="expand" onClick={e => {e.preventDefault();  showLogin()}}>Login</a>
                                                     </li>
                                                     <li className="list-inline-item" style={{ width: '100%' }}>
-                                                        <a href="#" className="expand" onClick={() => showRegister()}>Register</a>
+                                                        <a href="#" className="expand" onClick={e => {e.preventDefault(); showRegister()}}>Register</a>
                                                     </li>
                                                 </>
                                             ) : (
                                                 <>
                                                     <li className="list-inline-item mr-0" style={{ width: '100%' }}>
-                                                        <a href="#" className="expand" onClick={() => showProfile()}>My Account</a>
+                                                        <a href="#" className="expand" onClick={e => {e.preventDefault(); showProfile()}}>My Account</a>
                                                     </li>
                                                     <li className="list-inline-item" style={{ width: '100%' }}>
                                                         <a href="#">My Orders</a>

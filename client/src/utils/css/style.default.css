@@ -710,7 +710,8 @@ section.products .owl-carousel .product .hover-overlay ul {
 	display: inline-block
 }
 
-section.products .owl-carousel .product .hover-overlay ul a {
+section.products .owl-carousel .product .hover-overlay ul a,
+section.products .owl-carousel .product .hover-overlay ul span {
 	width: 50px;
 	height: 50px;
 	line-height: 50px;
@@ -1203,7 +1204,7 @@ section.contact .form-holder form button i {
 	-webkit-transform: translate(-50%, 0);
 	transform: translate(-50%, 0);
 	top: 30px;
-	opacity: 1
+	opacity: 1 !important
 }
 
 .cart-popup-overlay .cart-popup .close-btn {
@@ -3697,5 +3698,53 @@ select.form-control-lg:not([size]):not([multiple]) {
 #login-popup > .cart-popup,
 #register-popup > .cart-popup,
 #profile-popup > .cart-popup {
-    width: 50% !important;
+	width: 50% !important;
+	opacity: 0;
+  	transition: all 0.5s ease-in-out;
+	transition-delay: 0.4s;
+}
+
+/* #login-popup,
+#register-popup,
+#profile-popup {
+    opacity: 0;
+  	transition: 2s opacity;
+} */
+
+/* .fade-in {
+	animation: animate 5s 1;
+} */
+
+/* @keyframes animatePopup {
+	from { display: none; opacity: 0; }
+	to { dispay: block; opacity: 1; }
+} */
+
+.selectpicker1 {
+	outline: none !important;
+    color: #555 !important;
+    padding-left: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    min-width: 200px;
+    background: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    height: 36px;
+    padding: 0 20px;
+}
+
+.selectpicker1 > option {
+	display: block;
+    width: 100%;
+    /* padding: 3px 1.5rem; */
+    clear: both;
+    /* font-weight: 400; */
+    color: #555;
+    text-align: inherit;
+    white-space: nowrap;
+    background: 0 0;
+    border: 0;
+    font-weight: 300;
+    outline: none;
 }

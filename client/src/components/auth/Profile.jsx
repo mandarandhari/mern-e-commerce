@@ -23,6 +23,26 @@ const Profile = () => {
         });
     }, [customer]);
 
+    useEffect(() => {
+        if (showProfilePopup) {
+            document.getElementById('profile-popup').classList.add('active');
+            document.getElementById('profile-popup').style.display = 'block';
+
+            setTimeout(() => {
+                document.getElementById('profile-popup-main').classList.add('active');
+                document.getElementById('profile-popup-main').classList.add('fade-in-up');
+            }, 200)
+        } else {
+            document.getElementById('profile-popup').classList.remove('active');
+            document.getElementById('profile-popup').style.display = 'none';
+
+            setTimeout(() => {
+                document.getElementById('profile-popup-main').classList.remove('fade-in-up');
+                document.getElementById('profile-popup-main').classList.remove('active');
+            }, 200)
+        }
+    }, [showProfilePopup])
+
     const handleChange = e => {
         setUserdata({
             ...userdata,
@@ -38,8 +58,8 @@ const Profile = () => {
 
     return (
         <>
-            <div id="profile-popup" className={ showProfilePopup ? `cart-popup-overlay active` : `cart-popup-overlay`} style={ showProfilePopup ? {display: 'block'} : {display: 'none'} }>
-                <div className={ showProfilePopup ? `cart-popup fade-in-up active` : `cart-popup`}>
+            <div id="profile-popup" className='cart-popup-overlay'>
+                <div id="profile-popup-main" className='cart-popup'>
                     <div className="container">
                         <div className="close-btn" onClick={() => hideProfile()}><i className="fa fa-times"></i></div>
                         <div className="profile-main">

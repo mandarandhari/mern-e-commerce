@@ -1,5 +1,6 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 import AuthContext from './AuthContext';
 import AuthReducer from './AuthReducer';
@@ -84,6 +85,12 @@ const AuthState = (props) => {
                     errors: errors_res
                 }
             });
+
+            Swal.fire({
+                title: 'Success!',
+                icon: 'success',
+                text: 'You are registered'
+            });
         } catch(errors) {
             if (errors.response.status === 400) {
                 errors.response.data.errors.forEach(error => {
@@ -121,6 +128,12 @@ const AuthState = (props) => {
                     customer: response.data,
                     errors: errors_res
                 }
+            });
+
+            Swal.fire({
+                title: 'Success!',
+                icon: 'success',
+                text: 'You are now logged in'
             });
         } catch (errors) {
             if (errors.response.status === 400) {
@@ -164,6 +177,12 @@ const AuthState = (props) => {
                 type: UPDATE_PROFILE_SUCCESS,
                 payload: response.data
             });
+
+            Swal.fire({
+                title: 'Success!',
+                icon: 'success',
+                text: 'Your profile has been updated'
+            });
         } catch (errors) {
             if (errors && errors.response.status === 400) {
                 errors.response.data.errors.forEach(error => {
@@ -181,6 +200,12 @@ const AuthState = (props) => {
     const logoutCustomer = () => {
         dispatch({
             type: CUSTOMER_LOGOUT
+        });
+
+        Swal.fire({
+            title: 'Success!',
+            icon: 'success',
+            text: 'You are logged out'
         });
     }
 
