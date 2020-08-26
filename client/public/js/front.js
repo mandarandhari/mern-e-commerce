@@ -194,15 +194,15 @@ $(document).ready(function () {
     // ------------------------------------------------------- //
     // Increase/Reduce product amount
     // ------------------------------------------------------ //
-    $('.minus-btn').click(function () {
+    // $('.minus-btn').click(function () {
 
-        if (parseInt($('input.quantity').val(), 10) >= 1) {
-            $('input.quantity').val(parseInt($('input.quantity').val(), 10) - 1);
-        }
-    });
-    $('.plus-btn').click(function () {
-        $('input.quantity').val(parseInt($('input.quantity').val(), 10) + 1);
-    });
+    //     if (parseInt($('input.quantity').val(), 10) >= 1) {
+    //         $('input.quantity').val(parseInt($('input.quantity').val(), 10) - 1);
+    //     }
+    // });
+    // $('.plus-btn').click(function () {
+    //     $('input.quantity').val(parseInt($('input.quantity').val(), 10) + 1);
+    // });
 
     // ------------------------------------------------------ //
     // For demo purposes, can be deleted

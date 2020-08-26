@@ -7,7 +7,7 @@ import Products from './Products';
 import Divider from './Divider';
 import NewArrivals from './NewArrivals';
 import CartPopup from '../popups/CartPopup';
-import ProductContext from '../../context/productContext/ProductContext';
+import ProductContext from '../../context/product/ProductContext';
 
 const Home = () => {
     const { getProducts } = useContext(ProductContext);

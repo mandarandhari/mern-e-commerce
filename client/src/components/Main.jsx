@@ -7,7 +7,7 @@ import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import Login from './auth/Login';
 import Register from './auth/Register';
-import AuthContext from '../context/authContext/AuthContext';
+import AuthContext from '../context/auth/AuthContext';
 import Profile from './auth/Profile';
 
 const Main = () => {

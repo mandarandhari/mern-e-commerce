@@ -1,9 +1,24 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
-import ProductContext from '../../context/productContext/ProductContext';
+import ProductContext from '../../context/product/ProductContext';
+import CartContext from '../../context/cart/CartContext';
 
 const CartPopup = props => {
     const { showProductPopup, hideProduct } = useContext(ProductContext);
+    const { cart, addToCart } = useContext(CartContext);
+
+    const [ cartData, setCartData ] = useState({
+        size: props && props.size ? 
+                                ( props.size.s ? 's' : 
+                                    ( props.size.m ? 'm' : 
+                                        ( props.size.l ? 'l' : 
+                                            ( props.size.xl ? 'xl' : '')
+                                        )
+                                    )
+                                ) : '',
+        quantity: 1,
+        price: parseInt(props.price)
+    });
 
     useEffect(() => {
         if (showProductPopup) {
@@ -25,6 +40,42 @@ const CartPopup = props => {
         }
     }, [showProductPopup])
 
+    const addProductToCart = (productData) => {
+        addToCart({
+            _id: productData._id,
+            size: cartData.size,
+            quantity: cartData.quantity
+        });
+    }
+
+    const minusBtnClicked = () => {
+        if (cartData.quantity > 1) {
+            setCartData({
+                ...cartData,
+                quantity: cartData.quantity - 1,
+                price: cartData.price - (cartData.price / cartData.quantity)
+            });
+        }
+    }
+
+    const addBtnClicked = () => {
+        setCartData({
+            ...cartData,
+            quantity: cartData.quantity + 1,
+            price: cartData.price + (cartData.price / cartData.quantity)
+        });
+    }
+
+    const inputFieldChanged = e => {
+        if (parseInt(e.target.value) >= 1) {
+            setCartData({
+                ...cartData,
+                quantity: parseInt(e.target.value),
+                price: (cartData.price / cartData.quantity) * parseInt(e.target.value)
+            });
+        }
+    }
+
     return (
         <>
             <div id="cart-popup-1" className="cart-popup-overlay">
@@ -45,23 +96,27 @@ const CartPopup = props => {
                                                 <ul className="product-info list-unstyled">
                                                     <li className="size">
                                                         <select title="Choose Your Size" className="selectpicker1">
-                                                            { props.size && <option value="small">Small</option> }
-                                                            { props.size && <option value="medium">Medium</option> }
-                                                            { props.size && <option value="large">Large</option> }
-                                                            { props.size && <option value="x-large">X-Large</option> }
+                                                            { props.size && props.size.s && <option value="s">Small</option> }
+                                                            { props.size && props.size.m && <option value="m">Medium</option> }
+                                                            { props.size && props.size.l && <option value="l">Large</option> }
+                                                            { props.size && props.size.xl && <option value="xl">X-Large</option> }
                                                         </select>
                                                     </li>
                                                     <li>
                                                         <div className="product-quantity">
-                                                            <div className="minus-btn"><i className="fa fa-plus"></i></div>
-                                                            <input type="text" value="1" className="quantity" />
-                                                            <div className="plus-btn"><i className="fa fa-minus"></i></div>
+                                                            <div className="minus-btn" onClick={minusBtnClicked}>
+                                                                <i className="fa fa-minus"></i>
+                                                            </div>
+                                                            <input type="text" value={cartData.quantity} className="quantity" onChange={inputFieldChanged} />
+                                                            <div className="plus-btn" onClick={addBtnClicked}>
+                                                                <i className="fa fa-plus"></i>
+                                                            </div>
                                                         </div>
                                                     </li>
-                                                    <li className="price">${props.price}</li>
+                                                    <li className="price">${cartData.price}</li>
                                                 </ul>
                                             </div>
-                                            <a href="#" className="add-to-cart btn btn-primary">add to cart <i className="fa fa-shopping-cart"></i></a>
+                                            <a href="/#" className="add-to-cart btn btn-primary" onClick={e => {e.preventDefault(); addProductToCart(props)}}>add to cart <i className="fa fa-shopping-cart"></i></a>
                                         </div>
                                     </div>
                                 </div>

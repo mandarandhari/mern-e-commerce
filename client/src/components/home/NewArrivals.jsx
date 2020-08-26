@@ -13,9 +13,9 @@ const NewArrivals = () => {
                                     <img src="https://d19m59y37dris4.cloudfront.net/shirt/2-1-1/img/f-shirt-blue.jpg" alt="shirt" />
                                     <div className="hover-overlay">
                                     <ul className="list-inline">
-                                        <li className="list-inline-item"><a href="#" className="cart"><i className="fa fa-shopping-cart"></i></a></li>
-                                        <li className="list-inline-item"><a href="#" className="wishlist"><i className="fa fa-heart"></i></a></li>
-                                        <li className="list-inline-item"><a href="#" data-target="#cart-popup-1" className="expand"><i className="fa fa-expand-arrows-alt"></i></a></li>
+                                        <li className="list-inline-item"><a href="/#" className="cart"><i className="fa fa-shopping-cart"></i></a></li>
+                                        <li className="list-inline-item"><a href="/#" className="wishlist"><i className="fa fa-heart"></i></a></li>
+                                        <li className="list-inline-item"><a href="/#" data-target="#cart-popup-1" className="expand"><i className="fa fa-expand-arrows-alt"></i></a></li>
                                     </ul>
                                     </div>
                                 </div>
@@ -32,9 +32,9 @@ const NewArrivals = () => {
                                     <div className="labels"><span className="new">NEW</span><span className="sale">SALE</span></div>
                                     <div className="hover-overlay">
                                         <ul className="list-inline">
-                                            <li className="list-inline-item"><a href="#" className="cart"><i className="fa fa-shopping-cart"></i></a></li>
-                                            <li className="list-inline-item"><a href="#" className="wishlist"><i className="fa fa-heart"></i></a></li>
-                                            <li className="list-inline-item"><a href="#" data-target="#cart-popup-1" className="expand"><i className="fa fa-expand-arrows-alt"></i></a></li>
+                                            <li className="list-inline-item"><a href="/#" className="cart"><i className="fa fa-shopping-cart"></i></a></li>
+                                            <li className="list-inline-item"><a href="/#" className="wishlist"><i className="fa fa-heart"></i></a></li>
+                                            <li className="list-inline-item"><a href="/#" data-target="#cart-popup-1" className="expand"><i className="fa fa-expand-arrows-alt"></i></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -52,9 +52,9 @@ const NewArrivals = () => {
                                     <div className="labels"><span className="new">NEW</span></div>
                                     <div className="hover-overlay">
                                         <ul className="list-inline">
-                                            <li className="list-inline-item"><a href="#" className="cart"><i className="fa fa-shopping-cart"></i></a></li>
-                                            <li className="list-inline-item"><a href="#" className="wishlist"><i className="fa fa-heart"></i></a></li>
-                                            <li className="list-inline-item"><a href="#" data-target="#cart-popup-1" className="expand"><i className="fa fa-expand-arrows-alt"></i></a></li>
+                                            <li className="list-inline-item"><a href="/#" className="cart"><i className="fa fa-shopping-cart"></i></a></li>
+                                            <li className="list-inline-item"><a href="/#" className="wishlist"><i className="fa fa-heart"></i></a></li>
+                                            <li className="list-inline-item"><a href="/#" data-target="#cart-popup-1" className="expand"><i className="fa fa-expand-arrows-alt"></i></a></li>
                                         </ul>
                                     </div>
                                 </div>

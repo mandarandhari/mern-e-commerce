@@ -12,6 +12,7 @@ app.use('/login', require('./routes/customers/login'));
 app.use('/customer', require('./routes/customers/customer'));
 app.use('/profile', require('./routes/customers/profile'));
 app.use('/products', require('./routes/products/products'));
+app.use('/cart', require('./routes/cart/index'));
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Server started at port ${port}`));

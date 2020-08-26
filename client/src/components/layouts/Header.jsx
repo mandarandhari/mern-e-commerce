@@ -1,10 +1,24 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo_e from '../../utils/img/logo-e.png';
-import AuthContext from '../../context/authContext/AuthContext';
+import AuthContext from '../../context/auth/AuthContext';
+import CartContext from '../../context/cart/CartContext';
 
 const Header = () => {
     const { isLoggedIn, logoutCustomer, showLogin, showRegister, showProfile } = useContext(AuthContext);
+    const { cart, getCartProducts } = useContext(CartContext);
+
+    const [ cartNotEmpty, setCartNotEmpty ] = useState(false);
+
+    useEffect(() => {
+        getCartProducts();
+    }, []);
+
+    useEffect(() => {
+        if (Object.keys(cart).length !== 0) {
+            setCartNotEmpty(true);
+        }
+    }, [cart]);
 
     return (
         <>
@@ -23,7 +37,7 @@ const Header = () => {
                 </div>
                 <nav className="navbar navbar-expand-lg">
                     <div className="container">
-                        <a href="#" className="navbar-brand">
+                        <a href="/#" className="navbar-brand">
                             <img src={logo_e} alt="Shirt Store" />
                         </a>
                         <button type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation" className="navbar-toggler navbar-toggler-right">Menu<i className="fa fa-align-justify"></i></button>
@@ -36,29 +50,29 @@ const Header = () => {
                                     <Link to="/about-us" className="nav-link">About</Link>
                                 </li>
                                 <li>
-                                    <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="nav-link langs"><i className="fa fa-cog"></i></a>
+                                    <a href="/#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="nav-link langs"><i className="fa fa-cog"></i></a>
                                     <ul className="dropdown-menu">
                                     {(
                                         () => {
                                             return !isLoggedIn ? (
                                                 <>
                                                     <li className="list-inline-item mr-0" style={{ width: '100%' }}>
-                                                        <a href="#" className="expand" onClick={e => {e.preventDefault();  showLogin()}}>Login</a>
+                                                        <a href="/#" className="expand" onClick={e => {e.preventDefault();  showLogin()}}>Login</a>
                                                     </li>
                                                     <li className="list-inline-item" style={{ width: '100%' }}>
-                                                        <a href="#" className="expand" onClick={e => {e.preventDefault(); showRegister()}}>Register</a>
+                                                        <a href="/#" className="expand" onClick={e => {e.preventDefault(); showRegister()}}>Register</a>
                                                     </li>
                                                 </>
                                             ) : (
                                                 <>
                                                     <li className="list-inline-item mr-0" style={{ width: '100%' }}>
-                                                        <a href="#" className="expand" onClick={e => {e.preventDefault(); showProfile()}}>My Account</a>
+                                                        <a href="/#" className="expand" onClick={e => {e.preventDefault(); showProfile()}}>My Account</a>
                                                     </li>
                                                     <li className="list-inline-item" style={{ width: '100%' }}>
-                                                        <a href="#">My Orders</a>
+                                                        <a href="/#">My Orders</a>
                                                     </li>
                                                     <li className="list-inline-item" style={{ width: '100%' }}>
-                                                        <a href="#" onClick={() => logoutCustomer()}>Logout</a>
+                                                        <a href="/#" onClick={() => logoutCustomer()}>Logout</a>
                                                     </li>
                                                 </>
                                             )
@@ -69,7 +83,13 @@ const Header = () => {
                                 <li>
                                     <Link to="/cart" className="nav-link cart">
                                         <i className="fas fa-shopping-cart"></i>
-                                        <span className="items">1</span>
+                                        {(
+                                            () => {
+                                                if (cartNotEmpty) {
+                                                    return <span className="items">{cart.products.length}</span>
+                                                }
+                                            }
+                                        )()}
                                     </Link>
                                 </li>
                             </ul>

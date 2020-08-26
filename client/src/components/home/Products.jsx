@@ -2,11 +2,13 @@ import React, { useContext, useState, useEffect } from 'react';
 import OwlCarousel  from 'react-owl-carousel';
 import '../../../node_modules/owl.carousel/dist/assets/owl.carousel.css';
 import '../../../node_modules/owl.carousel/dist/assets/owl.theme.default.css';
-import ProductContext from '../../context/productContext/ProductContext';
+import ProductContext from '../../context/product/ProductContext';
 import CartPopup from '../popups/CartPopup';
+import CartContext from '../../context/cart/CartContext';
 
 const Products = () => {
     const { products, showProduct, showProductPopup } = useContext(ProductContext);
+    const { cart, addToCart } = useContext(CartContext)
 
     const [productsData, setProductsData] = useState([]);
     const [productData, setProductData] = useState({});
@@ -64,17 +66,17 @@ const Products = () => {
                                                 <div className="hover-overlay">
                                                     <ul className="list-inline">
                                                         <li className="list-inline-item">
-                                                            <a href="#" className="cart">
+                                                            <a href="/#" className="cart">
                                                                 <i className="fas fa-shopping-cart"></i>
                                                             </a>
                                                         </li>
                                                         <li className="list-inline-item">
-                                                            <a href="#" className="wishlist">
+                                                            <a href="/#" className="wishlist">
                                                                 <i className="fa fa-heart"></i>
                                                             </a>
                                                         </li>
                                                         <li className="list-inline-item">
-                                                            <a href="#" className="expand" onClick={e => {e.preventDefault(); handleExpandClickEvent(product)}}>
+                                                            <a href="/#" className="expand" onClick={e => {e.preventDefault(); handleExpandClickEvent(product)}}>
                                                                 <i className="fa fa-expand-arrows-alt"></i>
                                                             </a>
                                                         </li>
@@ -98,6 +100,7 @@ const Products = () => {
             </section>
             {
                 showProductPopup && <CartPopup 
+                    _id={productData._id}
                     image={productData.image_url}
                     title={productData.title}
                     description={productData.description}

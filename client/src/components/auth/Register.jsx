@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import AuthContext from '../../context/authContext/AuthContext';
+import AuthContext from '../../context/auth/AuthContext';
 
 const Register = () => {
     const { registerCustomer, registerFormErrors, showRegisterPopup, hideRegister } = useContext(AuthContext);

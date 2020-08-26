@@ -7,7 +7,7 @@ const Divider = () => {
                 <div className="overlay">
                     <div className="container text-center">
                         <h2>Limited Time Online</h2>
-                        <h3>Click &amp; Collect Next Day Delivery <a href="#" className="text-primary">Free Over 20$</a></h3>
+                        <h3>Click &amp; Collect Next Day Delivery <a href="/#" className="text-primary">Free Over 20$</a></h3>
                     </div>
                 </div>
             </section>
