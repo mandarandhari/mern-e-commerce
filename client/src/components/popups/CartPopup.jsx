@@ -5,10 +5,21 @@ import CartContext from '../../context/cart/CartContext';
 
 const CartPopup = props => {
     const { showProductPopup, hideProduct } = useContext(ProductContext);
-    const { cart, addToCart } = useContext(CartContext);
+    const { cart, addToCart, updateCartProduct } = useContext(CartContext);
 
     const [ cartData, setCartData ] = useState({
-        size: props && props.size ? 
+        size: '',
+        quantity: 1,
+        price: 0
+    });
+
+    const [ isAlreadyAddedInCart, setIsAlreadyAddedInCart ] = useState(false);
+
+    useEffect(() => {
+        if (Object.keys(props).length) {
+            setCartData({
+                ...cartData,
+                size: props && props.size ? 
                                 ( props.size.s ? 's' : 
                                     ( props.size.m ? 'm' : 
                                         ( props.size.l ? 'l' : 
@@ -16,9 +27,11 @@ const CartPopup = props => {
                                         )
                                     )
                                 ) : '',
-        quantity: 1,
-        price: parseInt(props.price)
-    });
+                quantity: 1,
+                price: parseInt(props.price)
+            })
+        }
+    }, [props]);
 
     useEffect(() => {
         if (showProductPopup) {
@@ -41,14 +54,55 @@ const CartPopup = props => {
     }, [showProductPopup])
 
     const addProductToCart = (productData) => {
-        addToCart({
-            _id: productData._id,
-            size: cartData.size,
-            quantity: cartData.quantity
+        let productAdd = [];
+        let productUpdate = {};
+
+        setIsAlreadyAddedInCart(false);
+
+        if (cartData.size !== '') {
+            if (cart.products && cart.products.length) {
+                cart.products.map(c => {
+                    if (c.product_id === productData._id && c.size === cartData.size) {
+                        if (c.quantity !== cartData.quantity) {
+                            productUpdate = c;
+                        } else {
+                            productAdd.push(c);
+                        }
+                    }
+                });
+            }
+    
+            if (Object.keys(productUpdate).length) {
+                updateCartProduct({
+                    __id: productUpdate._id,
+                    quantity: cartData.quantity
+                });
+    
+                return false;
+            }
+    
+            if (!productAdd.length) {
+                addToCart({
+                    _id: productData._id,
+                    size: cartData.size,
+                    quantity: cartData.quantity
+                });
+            } else {
+                setIsAlreadyAddedInCart(true);
+            }
+        }
+    }
+
+    const sizeValueChanged = e => {
+        setCartData({
+            ...cartData,
+            size: e.target.value
         });
     }
 
     const minusBtnClicked = () => {
+        setIsAlreadyAddedInCart(false);
+
         if (cartData.quantity > 1) {
             setCartData({
                 ...cartData,
@@ -59,6 +113,8 @@ const CartPopup = props => {
     }
 
     const addBtnClicked = () => {
+        setIsAlreadyAddedInCart(false);
+
         setCartData({
             ...cartData,
             quantity: cartData.quantity + 1,
@@ -67,11 +123,15 @@ const CartPopup = props => {
     }
 
     const inputFieldChanged = e => {
-        if (parseInt(e.target.value) >= 1) {
+        setIsAlreadyAddedInCart(false);
+
+        if (parseInt(e.target.value) >= 1 || e.target.value === '') {
+            const quantityValue = e.target.value == '' ? 0 : parseInt(e.target.value);
+
             setCartData({
                 ...cartData,
-                quantity: parseInt(e.target.value),
-                price: (cartData.price / cartData.quantity) * parseInt(e.target.value)
+                quantity: e.target.value === '' ? '' : parseInt(e.target.value),
+                price: (cartData.price / cartData.quantity) * quantityValue
             });
         }
     }
@@ -95,7 +155,7 @@ const CartPopup = props => {
                                                 <p>{props.description}</p>
                                                 <ul className="product-info list-unstyled">
                                                     <li className="size">
-                                                        <select title="Choose Your Size" className="selectpicker1">
+                                                        <select title="Choose Your Size" className="selectpicker1" onChange={sizeValueChanged}>
                                                             { props.size && props.size.s && <option value="s">Small</option> }
                                                             { props.size && props.size.m && <option value="m">Medium</option> }
                                                             { props.size && props.size.l && <option value="l">Large</option> }
@@ -116,6 +176,7 @@ const CartPopup = props => {
                                                     <li className="price">${cartData.price}</li>
                                                 </ul>
                                             </div>
+                                            { isAlreadyAddedInCart && <p className="text-danger mb-0">This product is already added in the cart</p>}
                                             <a href="/#" className="add-to-cart btn btn-primary" onClick={e => {e.preventDefault(); addProductToCart(props)}}>add to cart <i className="fa fa-shopping-cart"></i></a>
                                         </div>
                                     </div>

@@ -12,7 +12,6 @@ const BigProduct = () => {
         quantity: 1,
         price: 0
     });
-    const [addedToCart, setAddedToCart] = useState(false);
 
     useEffect(() => {
         setProductData({

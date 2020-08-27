@@ -9,7 +9,6 @@ import ProductContext from '../product/ProductContext';
 import { 
     ADD_TO_CART_SUCCESS,
     ADD_TO_CART_FAILURE,
-    REMOVE_FROM_CART_SUCCESS,
     REMOVE_FROM_CART_FAILURE,
     GET_CART_PRODUCTS_SUCCESS,
     GET_CART_PRODUCTS_FAILURE
@@ -36,11 +35,11 @@ const CartState = (props) => {
                 randomString += charString[Math.floor(Math.random() * charString.length)]
             };
             
-            await setCookie('cart_id', randomString, { maxAge: 3600 });
+            setCookie('cart_id', randomString, { maxAge: 3600 });
         }
 
         try {
-            const response = await axios.post('/cart/add', {
+            const response = await axios.post('/cart', {
                 cart_id: cookies.cart_id !== undefined ? cookies.cart_id : randomString,
                 product_id: product._id,
                 size: product.size,
@@ -49,19 +48,21 @@ const CartState = (props) => {
                 'Content-Type': 'application/json'
             });
 
+            if (showProductPopup) {
+                hideProduct();
+            }
+
             dispatch({
                 type: ADD_TO_CART_SUCCESS,
                 payload: response.data
             });
 
-            if (showProductPopup) {
-                hideProduct();
-            }
-
             Swal.fire({
                 title: 'Success!',
                 icon: 'success',
-                text: 'Product added to cart'
+                text: 'Product added to cart',
+                showConfirmButton: false,
+                timer: 1500
             });
         } catch (error) {
             dispatch({
@@ -70,25 +71,70 @@ const CartState = (props) => {
         }
     }
 
-    const removeFromCart = () => {
-        dispatch({
-            type: REMOVE_FROM_CART_SUCCESS
-        })
+    const updateCartProduct = async product => {
+        await axios.put('/cart/' + product.__id, {
+            quantity: product.quantity
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (showProductPopup) {
+            hideProduct();
+        }
+
+        Swal.fire({
+            title: 'Success!',
+            icon: 'success',
+            text: 'Product in the cart updated',
+            showConfirmButton: false,
+            timer: 1500
+        });
+
+        getCartProducts();
+    }
+
+    const removeFromCart = async product__id => {
+        try {
+            await axios.delete('/cart/' + product__id, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            getCartProducts();
+        } catch (e) {
+            console.log(e.response);
+
+            dispatch({
+                type: REMOVE_FROM_CART_FAILURE
+            });
+        }
     }
 
     const getCartProducts = async () => {
         if (cookies.cart_id !== undefined) {
             try {
-                const response = await axios.get('/cart/list/' + cookies.cart_id, {
+                const response = await axios.get('/cart/' + cookies.cart_id, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
-    
-                dispatch({
-                    type: GET_CART_PRODUCTS_SUCCESS,
-                    payload: response.data
-                })
+
+                if (response.data.products && response.data.products.length === 0) {
+                    removeCookie('cart_id');
+
+                    dispatch({
+                        type: GET_CART_PRODUCTS_SUCCESS,
+                        payload: {}
+                    });
+                } else {
+                    dispatch({
+                        type: GET_CART_PRODUCTS_SUCCESS,
+                        payload: response.data
+                    });
+                }
             } catch (error) {
                 dispatch({
                     type: GET_CART_PRODUCTS_FAILURE
@@ -103,7 +149,8 @@ const CartState = (props) => {
                 cart: state.cart,
                 addToCart,
                 removeFromCart,
-                getCartProducts
+                getCartProducts,
+                updateCartProduct
             }}>
                 {props.children}
             </CartContext.Provider>

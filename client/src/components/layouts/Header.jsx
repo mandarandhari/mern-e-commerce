@@ -8,17 +8,19 @@ const Header = () => {
     const { isLoggedIn, logoutCustomer, showLogin, showRegister, showProfile } = useContext(AuthContext);
     const { cart, getCartProducts } = useContext(CartContext);
 
-    const [ cartNotEmpty, setCartNotEmpty ] = useState(false);
+    const [ productsCount, setProductsCount ] = useState(0)
 
     useEffect(() => {
         getCartProducts();
     }, []);
 
     useEffect(() => {
-        if (Object.keys(cart).length !== 0) {
-            setCartNotEmpty(true);
+        if (cart.products && cart.products.length > 0) {
+            setProductsCount(cart.products.length);
+        } else {
+            setProductsCount(0);
         }
-    }, [cart]);
+    }, [cart, cart.products]);
 
     return (
         <>
@@ -83,13 +85,7 @@ const Header = () => {
                                 <li>
                                     <Link to="/cart" className="nav-link cart">
                                         <i className="fas fa-shopping-cart"></i>
-                                        {(
-                                            () => {
-                                                if (cartNotEmpty) {
-                                                    return <span className="items">{cart.products.length}</span>
-                                                }
-                                            }
-                                        )()}
+                                        { productsCount > 0 ? <span className="items">{productsCount}</span> : null }
                                     </Link>
                                 </li>
                             </ul>

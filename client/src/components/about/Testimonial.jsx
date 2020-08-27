@@ -10,7 +10,7 @@ const Testimonial = () => {
                             <h2 className="heading-left">How Our Clients <br /> Appreciate Our <br />Service</h2>
                         </div>
                         <div className="col-md-6 text-left text-md-center slider">
-                            <i className="icon-quote d-none d-md-inline-block"></i>
+                            <i className="fa fa-quote-left d-none d-md-inline-block"></i>
                             <div className="owl-carousel testimonials-slider">
                                 <div className="quote">
                                     <p className="lead">

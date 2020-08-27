@@ -1,14 +1,18 @@
 import React, { useContext, useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
+
 import CartContext from '../../context/cart/CartContext';
 
 const CartProducts = () => {
-    const { cart } = useContext(CartContext);
+    const { cart, removeFromCart, updateCartProduct } = useContext(CartContext);
 
     const [ productData, setProductData ] = useState([]);
     const [ total, setTotal ] = useState(0);
 
     useEffect(() => {
-        if (Object.keys(cart).length) {
+        setProductData([]);
+
+        if (cart.products && cart.products.length) {
             let totalPrice = 0;
 
             cart.products.forEach(p => {
@@ -32,7 +36,7 @@ const CartProducts = () => {
 
             setTotal(totalPrice);
         }
-    }, [cart]);
+    }, [cart.products]);
 
     const minusBtnClicked = cartProductId => {
         setProductData(prevData => {
@@ -57,17 +61,17 @@ const CartProducts = () => {
         });
     }
 
-    const inputFieldChanged = async (cartProductId, quantityValue) => {
-        await setProductData(prevData => {
+    const inputFieldChanged = (cartProductId, quantityValue) => {
+        setProductData(prevData => {
             let newData = [];
 
             prevData.map(prevD => {
                 let newObj = prevD;
 
-                if (prevD._id === cartProductId && parseInt(quantityValue) >= 1) {
+                if (prevD._id === cartProductId && (parseInt(quantityValue) >= 1 || quantityValue == '')) {
                     newObj = {
                         ...newObj,
-                        quantity: parseInt(quantityValue)
+                        quantity: quantityValue == '' ? '' : parseInt(quantityValue)
                     }
                 }
 
@@ -81,7 +85,8 @@ const CartProducts = () => {
 
         productData.forEach(p => {
             if (p._id === cartProductId) {
-                totalVal = totalVal + (parseInt(p.price) * parseInt(quantityValue));
+                const totalValue = quantityValue == '' ? 0 : (parseInt(p.price) * parseInt(quantityValue))
+                totalVal = parseInt(totalVal) + parseInt(totalValue);
             } else {
                 totalVal = totalVal + (parseInt(p.price) * parseInt(p.quantity));
             }
@@ -113,6 +118,39 @@ const CartProducts = () => {
         });
     }
 
+    const updateProductBtnClicked = cartProductId => {
+        let quantity = 0;
+
+        productData.forEach(prodData => {
+            if (prodData._id === cartProductId) {
+                if (prodData.quantity !== '') {
+                    quantity = prodData.quantity;
+                }
+            }
+        });
+
+        if (quantity > 0) {
+            updateCartProduct({
+                __id: cartProductId,
+                quantity: quantity
+            });
+        }
+    }
+
+    const deleteProductBtnClicked = productId => {
+        Swal.fire({
+            title: 'Remove from cart',
+            icon: 'question',
+            text: 'Are you sure you want to remove product from cart?',
+            showConfirmButton: true,
+            confirmButtonText: 'Yes',
+            showCancelButton: true,
+            cancelButtonText: 'No'
+        }).then(() => {
+            removeFromCart(productId);
+        })
+    }
+
     return (
         <>
             <div className="container">
@@ -130,7 +168,7 @@ const CartProducts = () => {
                     {
                         productData.length && productData.map((product, i) => {
                             return (
-                                <>
+                                <React.Fragment key={i}>
                                     <div className={i < productData.length - 1 ? `row mb-5` : 'row'}>
                                         <div className="col-sm-5">
                                             <div className="product-overview clearfix">
@@ -151,9 +189,9 @@ const CartProducts = () => {
                                         </div>
                                         <div className="col-sm-2">
                                             <div className="product-quantity">
-                                                <div className="minus-btn"><i className="fa fa-minus" onClick={() => minusBtnClicked(product._id)}></i></div>
+                                                <div className="minus-btn" onClick={() => minusBtnClicked(product._id)}><i className="fa fa-minus"></i></div>
                                                 <input type="text" value={product.quantity} className="quantity" onChange={e => inputFieldChanged(product._id, e.target.value)} />
-                                                <div className="plus-btn"><i className="fa fa-plus" onClick={() => addBtnClicked(product._id)}></i></div>
+                                                <div className="plus-btn" onClick={() => addBtnClicked(product._id)}><i className="fa fa-plus"></i></div>
                                             </div>
                                         </div>
                                         <div className="col-sm-2">
@@ -162,15 +200,15 @@ const CartProducts = () => {
                                         <div className="col-sm-1">
                                             <div className="row">
                                                 <div className="col-sm-12">
-                                                    <button className="btn btn-sm btn-primary" style={{ padding: '6px' }}><i className="fa fa-check"></i></button>
+                                                    <button className="btn btn-sm btn-primary" style={{ padding: '6px' }} onClick={() => updateProductBtnClicked(product._id)}><i className="fa fa-check"></i></button>
                                                 </div>
                                                 <div className="col-sm-12 mt-2">
-                                                    <button className="btn btn-sm btn-danger" style={{ padding: '6px' }}><i className="fa fa-trash-alt"></i></button>
+                                                    <button className="btn btn-sm btn-danger" style={{ padding: '6px' }} onClick={() => deleteProductBtnClicked(product._id)}><i className="fa fa-trash-alt"></i></button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </>
+                                </React.Fragment>
                             )
                         })
                     }

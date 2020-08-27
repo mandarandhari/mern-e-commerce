@@ -727,8 +727,8 @@ section.products .owl-carousel .product .hover-overlay ul a:hover {
 
 section.products .owl-carousel .product .hover-overlay ul a i {
 	display: inline-block;
-	-webkit-transform: translateY(4px);
-	transform: translateY(4px)
+	/* -webkit-transform: translateY(4px); */
+	/* transform: translateY(4px) */
 }
 
 section.divider {
@@ -1223,10 +1223,10 @@ section.contact .form-holder form button i {
 	cursor: pointer
 }
 
-.cart-popup-overlay .cart-popup .close-btn i {
+/* .cart-popup-overlay .cart-popup .close-btn i {
 	-webkit-transform: translateY(3px);
 	transform: translateY(3px)
-}
+} */
 
 .cart-popup-overlay .cart-popup .close-btn:hover {
 	background: #2b90d9

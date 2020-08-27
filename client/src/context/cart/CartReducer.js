@@ -1,5 +1,9 @@
 import {
-    ADD_TO_CART_SUCCESS, GET_CART_PRODUCTS_SUCCESS, GET_CART_PRODUCTS_FAILURE, ADD_TO_CART_FAILURE
+    ADD_TO_CART_SUCCESS,
+    GET_CART_PRODUCTS_SUCCESS,
+    GET_CART_PRODUCTS_FAILURE,
+    ADD_TO_CART_FAILURE,
+    REMOVE_FROM_CART_FAILURE
 } from "../../Types";
 
 export default (state, action) => {
@@ -12,6 +16,7 @@ export default (state, action) => {
             }
 
         case ADD_TO_CART_FAILURE:
+        case REMOVE_FROM_CART_FAILURE:
         case GET_CART_PRODUCTS_FAILURE:
             alert('Something went wrong');
             break

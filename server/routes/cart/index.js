@@ -3,7 +3,7 @@ const router = require('express').Router();
 const Product = require('./../../models/Product');
 const Cart = require('./../../models/Cart');
 
-router.post('/add', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const product = await Product.findById(req.body.product_id);
 
@@ -68,7 +68,7 @@ router.post('/add', async (req, res) => {
     }
 });
 
-router.get('/list/:cart_id', async (req, res) => {
+router.get('/:cart_id', async (req, res) => {
     try {
         const cart = await Cart.aggregate(
             [
@@ -103,7 +103,7 @@ router.get('/list/:cart_id', async (req, res) => {
                     image: c.product.image_url
                 });
             })
-    
+
             return res.status(200).json({
                 cart_id: req.params.cart_id,
                 products: cartProducts
@@ -119,5 +119,37 @@ router.get('/list/:cart_id', async (req, res) => {
         });
     }
 });
+
+router.delete('/:product_id', async (req, res) => {
+    try {
+        await Cart.findByIdAndDelete(req.params.product_id);
+
+        return res.status(200).json({
+            status: true
+        })
+    } catch (error) {
+        console.log(e);
+
+        return res.status(400).json({
+            msg: 'Something went wrong'
+        });
+    }
+});
+
+router.put('/:product__id', async(req, res) => {
+    try {
+        await Cart.findByIdAndUpdate(req.params.product__id, {
+            quantity: req.body.quantity
+        });
+
+        return res.status(200).json({
+            status: true
+        });
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Something went wrong'
+        });
+    }
+})
 
 module.exports = router;

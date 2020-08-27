@@ -21,6 +21,12 @@ const Main = () => {
         }
     }, []);
 
+    useEffect(() => {
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+        }, 2000)
+    });
+
     return (
         <>
             <Header />

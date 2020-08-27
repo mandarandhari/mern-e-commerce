@@ -10,10 +10,12 @@ const Cart = () => {
     const [ cartNotEmpty, setCartNotEmpty ] = useState(false);
 
     useEffect(() => {
-        if (Object.keys(cart).length) {
+        if (cart.products && cart.products.length) {
             setCartNotEmpty(true);
+        } else {
+            setCartNotEmpty(false);
         }
-    }, [cart]);
+    }, [cart.products]);
 
     return (
         <>

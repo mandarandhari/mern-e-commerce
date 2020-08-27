@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
 import OwlCarousel  from 'react-owl-carousel';
+
 import '../../../node_modules/owl.carousel/dist/assets/owl.carousel.css';
 import '../../../node_modules/owl.carousel/dist/assets/owl.theme.default.css';
+
 import ProductContext from '../../context/product/ProductContext';
 import CartPopup from '../popups/CartPopup';
-import CartContext from '../../context/cart/CartContext';
 
 const Products = () => {
     const { products, showProduct, showProductPopup } = useContext(ProductContext);
-    const { cart, addToCart } = useContext(CartContext)
 
     const [productsData, setProductsData] = useState([]);
     const [productData, setProductData] = useState({});
@@ -59,13 +59,13 @@ const Products = () => {
                             >
                             {productsData.map((product, index) => {
                                 return (
-                                    <>
-                                        <div className="product" key={index}>
+                                    <React.Fragment key={index}>
+                                        <div className="product">
                                             <div className="item-image">
                                                 <img src={product.image_url} alt="shirt" className="img-fluid mx-auto" />
                                                 <div className="hover-overlay">
                                                     <ul className="list-inline">
-                                                        <li className="list-inline-item">
+                                                        {/* <li className="list-inline-item">
                                                             <a href="/#" className="cart">
                                                                 <i className="fas fa-shopping-cart"></i>
                                                             </a>
@@ -74,7 +74,7 @@ const Products = () => {
                                                             <a href="/#" className="wishlist">
                                                                 <i className="fa fa-heart"></i>
                                                             </a>
-                                                        </li>
+                                                        </li> */}
                                                         <li className="list-inline-item">
                                                             <a href="/#" className="expand" onClick={e => {e.preventDefault(); handleExpandClickEvent(product)}}>
                                                                 <i className="fa fa-expand-arrows-alt"></i>
@@ -90,7 +90,7 @@ const Products = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    </>
+                                    </React.Fragment>
                                 )
                             })}
                             </OwlCarousel>
@@ -108,7 +108,6 @@ const Products = () => {
                     size={productData.size && productData.size[0]}
                 />
             }
-            
         </>
     )
 }
