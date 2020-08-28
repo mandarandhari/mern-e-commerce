@@ -9,6 +9,7 @@ import Login from './auth/Login';
 import Register from './auth/Register';
 import AuthContext from '../context/auth/AuthContext';
 import Profile from './auth/Profile';
+import Order from './order/Order';
 
 const Main = () => {
     const { getCustomer, isLoggedIn } = useContext(AuthContext);
@@ -42,6 +43,9 @@ const Main = () => {
 
                                 case '/cart':
                                     return <Cart />
+
+                                case '/order':
+                                    return <Order />
 
                                 default: return
                             }

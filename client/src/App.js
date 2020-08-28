@@ -17,6 +17,7 @@ import Main from './components/Main';
 import AuthState from './context/auth/AuthState';
 import ProductState from './context/product/ProductState';
 import CartState from './context/cart/CartState';
+import OrderState from './context/order/OrderState';
 
 function App() {
   return (
@@ -24,13 +25,16 @@ function App() {
       <AuthState>
         <ProductState>
           <CartState>
-            <BrowserRouter>
-              <Switch>
-                <Route exact path="/" component={Main} />
-                <Route exact path="/about-us" component={Main} />
-                <Route exact path="/cart" component={Main} />
-              </Switch>
-            </BrowserRouter>
+            <OrderState>
+              <BrowserRouter>
+                <Switch>
+                  <Route exact path="/" component={Main} />
+                  <Route exact path="/about-us" component={Main} />
+                  <Route exact path="/cart" component={Main} />
+                  <Route exact path="/order" component={Main} />
+                </Switch>
+              </BrowserRouter>
+            </OrderState>
           </CartState>
         </ProductState>
       </AuthState>

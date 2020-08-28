@@ -126,7 +126,7 @@ const CartPopup = props => {
         setIsAlreadyAddedInCart(false);
 
         if (parseInt(e.target.value) >= 1 || e.target.value === '') {
-            const quantityValue = e.target.value == '' ? 0 : parseInt(e.target.value);
+            const quantityValue = e.target.value === '' ? 0 : parseInt(e.target.value);
 
             setCartData({
                 ...cartData,

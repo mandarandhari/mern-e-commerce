@@ -1,10 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 import CartContext from '../../context/cart/CartContext';
+import AuthContext from '../../context/auth/AuthContext';
 
 const CartProducts = () => {
     const { cart, removeFromCart, updateCartProduct } = useContext(CartContext);
+    const { isLoggedIn, showLogin } = useContext(AuthContext);
+
+    const history = useHistory();
 
     const [ productData, setProductData ] = useState([]);
     const [ total, setTotal ] = useState(0);
@@ -68,10 +73,10 @@ const CartProducts = () => {
             prevData.map(prevD => {
                 let newObj = prevD;
 
-                if (prevD._id === cartProductId && (parseInt(quantityValue) >= 1 || quantityValue == '')) {
+                if (prevD._id === cartProductId && (parseInt(quantityValue) >= 1 || quantityValue === '')) {
                     newObj = {
                         ...newObj,
-                        quantity: quantityValue == '' ? '' : parseInt(quantityValue)
+                        quantity: quantityValue === '' ? '' : parseInt(quantityValue)
                     }
                 }
 
@@ -85,7 +90,7 @@ const CartProducts = () => {
 
         productData.forEach(p => {
             if (p._id === cartProductId) {
-                const totalValue = quantityValue == '' ? 0 : (parseInt(p.price) * parseInt(quantityValue))
+                const totalValue = quantityValue === '' ? 0 : (parseInt(p.price) * parseInt(quantityValue))
                 totalVal = parseInt(totalVal) + parseInt(totalValue);
             } else {
                 totalVal = totalVal + (parseInt(p.price) * parseInt(p.quantity));
@@ -149,6 +154,14 @@ const CartProducts = () => {
         }).then(() => {
             removeFromCart(productId);
         })
+    }
+
+    const paymentBtnClicked = () => {
+        if (isLoggedIn) {
+            history.push('/order');
+        } else {
+            showLogin();
+        }
     }
 
     return (
@@ -215,10 +228,15 @@ const CartProducts = () => {
                     </div>
                 </div>
             </div>
-            <div className="total-price text-right">
+            <div className="total-price text-right mb-0">
                 <div className="container">
                     <h3>Total:</h3>
                     <h2 className="text-primary">${total}</h2>
+                </div>
+            </div>
+            <div className="total-price text-right">
+                <div className="container">
+                    <button className="btn btn-md btn-primary" onClick={paymentBtnClicked}>Proceed to Payment</button>
                 </div>
             </div>
         </>

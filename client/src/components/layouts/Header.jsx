@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logo_e from '../../utils/img/logo-e.png';
 import AuthContext from '../../context/auth/AuthContext';
 import CartContext from '../../context/cart/CartContext';
@@ -8,7 +8,9 @@ const Header = () => {
     const { isLoggedIn, logoutCustomer, showLogin, showRegister, showProfile } = useContext(AuthContext);
     const { cart, getCartProducts } = useContext(CartContext);
 
-    const [ productsCount, setProductsCount ] = useState(0)
+    const [ productsCount, setProductsCount ] = useState(0);
+
+    const location = useLocation();
 
     useEffect(() => {
         getCartProducts();
@@ -45,10 +47,10 @@ const Header = () => {
                         <button type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation" className="navbar-toggler navbar-toggler-right">Menu<i className="fa fa-align-justify"></i></button>
                         <div id="navigation" className="collapse navbar-collapse">
                             <ul className="navbar-nav ml-auto">
-                                <li className="active">
+                                <li className={ location.pathname === '/' ? "active" : ''}>
                                     <Link to="/" className="nav-link">Home</Link>
                                 </li>
-                                <li>
+                                <li className={ location.pathname === '/about-us' ? 'active' : '' }>
                                     <Link to="/about-us" className="nav-link">About</Link>
                                 </li>
                                 <li>
@@ -82,7 +84,7 @@ const Header = () => {
                                     )()}
                                     </ul>
                                 </li>
-                                <li>
+                                <li className={ location.pathname === '/cart' || location.pathname === '/order' ? 'active' : '' }>
                                     <Link to="/cart" className="nav-link cart">
                                         <i className="fas fa-shopping-cart"></i>
                                         { productsCount > 0 ? <span className="items">{productsCount}</span> : null }

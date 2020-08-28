@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import CartBanner from './CartBanner';
 import CartProducts from './CartProducts';
-import CartShipping from './CartShipping';
 import CartContext from '../../context/cart/CartContext';
 
 const Cart = () => {
@@ -21,14 +20,13 @@ const Cart = () => {
         <>
             <div className="cart-page-holder">
                 <CartBanner />
-                <section className="cart">
+                <section className={ cartNotEmpty ? "cart pb-0" : "cart" }>
                 {(
                     () => {
                         if (cartNotEmpty) {
                             return (
                                 <>
                                     <CartProducts />
-                                    <CartShipping />
                                 </>
                             )
                         } else {

@@ -89,7 +89,9 @@ const AuthState = (props) => {
             Swal.fire({
                 title: 'Success!',
                 icon: 'success',
-                text: 'You are registered'
+                text: 'You are registered',
+                showConfirmButton: false,
+                timer: 1500
             });
         } catch(errors) {
             if (errors.response.status === 400) {
@@ -133,7 +135,9 @@ const AuthState = (props) => {
             Swal.fire({
                 title: 'Success!',
                 icon: 'success',
-                text: 'You are now logged in'
+                text: 'You are now logged in',
+                showConfirmButton: false,
+                timer: 1500
             });
         } catch (errors) {
             if (errors.response.status === 400) {
@@ -181,7 +185,9 @@ const AuthState = (props) => {
             Swal.fire({
                 title: 'Success!',
                 icon: 'success',
-                text: 'Your profile has been updated'
+                text: 'Your profile has been updated',
+                showConfirmButton: false,
+                timer: 1500
             });
         } catch (errors) {
             if (errors && errors.response.status === 400) {
@@ -205,7 +211,9 @@ const AuthState = (props) => {
         Swal.fire({
             title: 'Success!',
             icon: 'success',
-            text: 'You are logged out'
+            text: 'You are logged out',
+            showConfirmButton: false,
+            timer: 1500
         });
     }
 
@@ -245,8 +253,12 @@ const AuthState = (props) => {
             dispatch({
                 type: CUSTOMER_GET_SUCCESS,
                 payload: response.data
-            })
+            });
         } catch (errors) {
+            if (errors.response.status === 401) {
+                logoutCustomer();
+            }
+
             dispatch({
                 type: CUSTOMER_GET_FAILURE
             })

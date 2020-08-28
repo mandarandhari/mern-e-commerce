@@ -183,13 +183,13 @@ $(document).ready(function () {
     // ------------------------------------------------------- //
     // Alternative form show/hide
     // ------------------------------------------------------ //
-    $("#another-address").change(function () {
-        if (this.checked) {
-            $('.shipping-alternative').show();
-        } else {
-            $('.shipping-alternative').hide();
-        }
-    });
+    // $("#another-address").change(function () {
+    //     if (this.checked) {
+    //         $('.shipping-alternative').show();
+    //     } else {
+    //         $('.shipping-alternative').hide();
+    //     }
+    // });
 
     // ------------------------------------------------------- //
     // Increase/Reduce product amount
