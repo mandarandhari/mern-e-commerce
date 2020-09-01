@@ -1,11 +1,11 @@
 import React from 'react';
 
-const OrderBanner = () => {
+const CheckoutBanner = () => {
     return (
         <>
             <section className="hero">
                 <div className="container">
-                    <h1>Order</h1>
+                    <h1>Checkout</h1>
                     <p className="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                 </div>
             </section>
@@ -13,4 +13,4 @@ const OrderBanner = () => {
     )
 }
 
-export default OrderBanner;
+export default CheckoutBanner;

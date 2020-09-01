@@ -86,7 +86,7 @@ const Products = () => {
                                             <div className="item-info">
                                                 <div className="clearfix">
                                                     <h5 className="pull-left">{product.title}</h5>
-                                                    <span className="price pull-right">${product.price}</span>
+                                                    <span className="price pull-right"><i className="fas fa-rupee-sign"></i>&nbsp;{product.price}</span>
                                                 </div>
                                             </div>
                                         </div>

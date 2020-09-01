@@ -158,8 +158,9 @@ const CartProducts = () => {
 
     const paymentBtnClicked = () => {
         if (isLoggedIn) {
-            history.push('/order');
+            history.push('/checkout');
         } else {
+            localStorage.setItem('redirect_to', '/checkout');
             showLogin();
         }
     }
@@ -198,7 +199,7 @@ const CartProducts = () => {
                                             </div>
                                         </div>
                                         <div className="col-sm-2">
-                                            <h3>${product.price}</h3>
+                                            <h3><i className="fas fa-rupee-sign"></i>&nbsp;{product.price}</h3>
                                         </div>
                                         <div className="col-sm-2">
                                             <div className="product-quantity">
@@ -208,7 +209,7 @@ const CartProducts = () => {
                                             </div>
                                         </div>
                                         <div className="col-sm-2">
-                                            <h3>${(product.price * product.quantity)}</h3>
+                                            <h3><i className="fas fa-rupee-sign"></i>&nbsp;{(product.price * product.quantity)}</h3>
                                         </div>
                                         <div className="col-sm-1">
                                             <div className="row">
@@ -231,12 +232,12 @@ const CartProducts = () => {
             <div className="total-price text-right mb-0">
                 <div className="container">
                     <h3>Total:</h3>
-                    <h2 className="text-primary">${total}</h2>
+                    <h2 className="text-primary">&nbsp;<i className="fas fa-rupee-sign"></i>&nbsp;{total}</h2>
                 </div>
             </div>
             <div className="total-price text-right">
                 <div className="container">
-                    <button className="btn btn-md btn-primary" onClick={paymentBtnClicked}>Proceed to Payment</button>
+                    <button className="btn btn-md btn-primary" onClick={paymentBtnClicked}>Go to checkout page</button>
                 </div>
             </div>
         </>

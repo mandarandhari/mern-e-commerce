@@ -173,7 +173,7 @@ const CartPopup = props => {
                                                             </div>
                                                         </div>
                                                     </li>
-                                                    <li className="price">${cartData.price}</li>
+                                                    <li className="price"><i className="fas fa-rupee-sign"></i>&nbsp;{cartData.price}</li>
                                                 </ul>
                                             </div>
                                             { isAlreadyAddedInCart && <p className="text-danger mb-0">This product is already added in the cart</p>}

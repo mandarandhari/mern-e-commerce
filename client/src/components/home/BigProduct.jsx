@@ -113,10 +113,10 @@ const BigProduct = () => {
                                             <div className="plus-btn" onClick={plusBtnClicked}><i className="fas fa-plus"></i></div>
                                         </div>
                                     </li>
-                                    <li className="price">${cartData.price}</li>
+                                    <li className="price"><i className="fas fa-rupee-sign"></i>&nbsp;{cartData.price}</li>
                                 </ul>
                             </div>
-                            <a href="#" className="add-to-cart btn btn-primary" onClick={e => {e.preventDefault(); addProductToCart(productData)} }>add to cart <i className="fas fa-shopping-cart"></i></a>
+                            <a href="/#" className="add-to-cart btn btn-primary" onClick={e => {e.preventDefault(); addProductToCart(productData)} }>add to cart <i className="fas fa-shopping-cart"></i></a>
                         </div>
                     </div>
                 </div>

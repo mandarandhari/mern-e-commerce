@@ -22,7 +22,7 @@ const NewArrivals = () => {
                                 <div className="item-info">
                                     <h5>Elegant Blue</h5>
                                     <ul className="price list-inline">
-                                        <li className="list-inline-item current">70.00$</li>
+                                        <li className="list-inline-item current"><i className="fas fa-rupee-sign"></i>&nbsp;70.00</li>
                                     </ul>
                                 </div>
                             </div>
@@ -41,8 +41,8 @@ const NewArrivals = () => {
                                 <div className="item-info">
                                     <h5>Elegant Cyan</h5>
                                     <ul className="price list-inline">
-                                        <li className="old list-inline-item">70.00$</li>
-                                        <li className="current list-inline-item">40.00$</li>
+                                        <li className="old list-inline-item"><i className="fas fa-rupee-sign"></i>&nbsp;70.00</li>
+                                        <li className="current list-inline-item"><i className="fas fa-rupee-sign"></i>&nbsp;40.00</li>
                                     </ul>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@ const NewArrivals = () => {
                                 <div className="item-info">
                                     <h5>Awesome Green</h5>
                                     <ul className="price list-inline">
-                                        <li className="list-inline-item current">70.00$</li>
+                                        <li className="list-inline-item current"><i className="fas fa-rupee-sign"></i>&nbsp;70.00</li>
                                     </ul>
                                 </div>
                             </div>

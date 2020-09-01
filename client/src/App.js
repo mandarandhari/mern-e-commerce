@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css';
@@ -19,6 +21,8 @@ import ProductState from './context/product/ProductState';
 import CartState from './context/cart/CartState';
 import OrderState from './context/order/OrderState';
 
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+
 function App() {
   return (
     <>
@@ -26,14 +30,17 @@ function App() {
         <ProductState>
           <CartState>
             <OrderState>
-              <BrowserRouter>
-                <Switch>
-                  <Route exact path="/" component={Main} />
-                  <Route exact path="/about-us" component={Main} />
-                  <Route exact path="/cart" component={Main} />
-                  <Route exact path="/order" component={Main} />
-                </Switch>
-              </BrowserRouter>
+              <Elements stripe={stripePromise}>
+                <BrowserRouter>
+                  <Switch>
+                    <Route exact path="/" component={Main} />
+                    <Route exact path="/about-us" component={Main} />
+                    <Route exact path="/cart" component={Main} />
+                    <Route exact path="/checkout" component={Main} />
+                    <Route exact path="/payment" component={Main} />
+                  </Switch>
+                </BrowserRouter>
+              </Elements>
             </OrderState>
           </CartState>
         </ProductState>
