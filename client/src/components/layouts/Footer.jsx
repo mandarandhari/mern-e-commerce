@@ -89,7 +89,7 @@ const Footer = () => {
                                 <p>© 2018 ShirtStore.com. All rights reserved.</p>
                             </div>
                             <div className="col-md-6 text-right">
-                                <p>Template By <a href="https://ondrejsvestka.cz/" target="_blank">Ondrej Svestka</a></p>
+                                <p>Template By <a href="https://ondrejsvestka.cz/" target="_blank" rel="noopener noreferrer">Ondrej Svestka</a></p>
                             </div>
                         </div>
                     </div>

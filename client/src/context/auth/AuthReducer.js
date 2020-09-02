@@ -18,7 +18,6 @@ import {
 export default (state, action) => {
     switch (action.type) {
         case CUSTOMER_REGISTER_SUCCESS:
-            console.log(action.payload);
             localStorage.setItem('token', action.payload.customer.token);
 
             return {

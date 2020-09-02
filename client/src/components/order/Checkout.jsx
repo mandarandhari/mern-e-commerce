@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox/Checkbox';
 
@@ -10,13 +11,18 @@ import OrderContext from '../../context/order/OrderContext';
 const Checkout = () => {
     const history = useHistory();
 
-    const { customer } = useContext(AuthContext);
+    const { customer, isLoggedIn } = useContext(AuthContext);
     const { invoice_address, hasDifferentShippingAddress, shipping_address, addAddresses, setDifferentShippingAddressVal } = useContext(OrderContext);
 
     const [ showShippingAddressForm, setShowShippingAddressForm ] = useState(false);
 
+    const [ cookies ] = useCookies();
+
     let _invoice_address = {};
     let _shipping_address = {};
+
+    
+    const [ checkboxChecked, setCheckboxChecked ] = useState(false);
 
     if (!!localStorage.getItem('invoice_address')) {
         _invoice_address = JSON.parse(localStorage.getItem('invoice_address')); 
@@ -78,8 +84,6 @@ const Checkout = () => {
         }
     });
 
-    const [ checkboxChecked, setCheckboxChecked ] = useState(false);
-
     useEffect(() => {
         if (!!localStorage.removeItem('redirect_to')) {
             localStorage.removeItem('redirect_to');
@@ -120,12 +124,13 @@ const Checkout = () => {
             region: shipping_address.region ? shipping_address.region : shippingAddress.region,
             country: shipping_address.country ? shipping_address.country : shippingAddress.country
         })
-    }, [ shipping_address]);
+    }, [shipping_address]);
 
-    // useEffect(() => {
-    //     setCheckboxChecked(true);
-    //     setDifferentShippingAddressVal(true);
-    // }, [_shipping_address]);
+    useEffect(() => {
+        if (!isLoggedIn || cookies.cart_id === undefined) {
+            history.push('/');
+        }
+    }, []);
 
     const invoiceAddressFieldChanged = e => {
         setInvoiceAddress({

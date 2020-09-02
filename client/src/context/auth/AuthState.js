@@ -86,6 +86,8 @@ const AuthState = (props) => {
                 }
             });
 
+            localStorage.setItem('customer', JSON.stringify(response.data.customer));
+
             Swal.fire({
                 title: 'Success!',
                 icon: 'success',
@@ -131,6 +133,8 @@ const AuthState = (props) => {
                     errors: errors_res
                 }
             });
+
+            localStorage.setItem('customer', JSON.stringify(response.data.customer));
 
             Swal.fire({
                 title: 'Success!',
@@ -186,6 +190,8 @@ const AuthState = (props) => {
                 payload: response.data
             });
 
+            localStorage.setItem('customer', JSON.stringify(response.data));
+
             Swal.fire({
                 title: 'Success!',
                 icon: 'success',
@@ -214,6 +220,8 @@ const AuthState = (props) => {
 
         localStorage.removeItem('invoice_address');
         localStorage.removeItem('shipping_address');
+
+        localStorage.removeItem('customer');
 
         Swal.fire({
             title: 'Success!',
@@ -261,6 +269,8 @@ const AuthState = (props) => {
                 type: CUSTOMER_GET_SUCCESS,
                 payload: response.data
             });
+
+            localStorage.setItem('customer', JSON.stringify(response.data));
         } catch (errors) {
             if (errors.response.status === 401) {
                 logoutCustomer();

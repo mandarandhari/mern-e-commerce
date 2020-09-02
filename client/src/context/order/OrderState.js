@@ -10,7 +10,8 @@ import AuthContext from '../auth/AuthContext';
 
 import {
     ADD_ADDRESS,
-    HAS_DEFFERENT_SHIPPING_ADDRESS
+    HAS_DEFFERENT_SHIPPING_ADDRESS,
+    SET_STRIPE_CLIENT_SECRET
 } from '../../Types';
 
 const OrderState = props => {
@@ -28,7 +29,7 @@ const OrderState = props => {
     const [ _customer, set_customer ] = useState({});
     const [ _cart, set_cart ] = useState({});
 
-    const { cart } = useContext(CartContext);
+    const { cart, getCartProducts } = useContext(CartContext);
     const { customer } = useContext(AuthContext);
 
     useEffect(() => {
@@ -75,10 +76,10 @@ const OrderState = props => {
         try {
             const response = await axios.post('/order/create_payment_intent', {
                 cart_id: _cart.cart_id ? _cart.cart_id : cookies.cart_id,
-                customer_id: _customer.id,
+                customer_id: _customer.id ? _customer.id : JSON.parse(localStorage.getItem('customer')).id,
                 order_id: orderId,
                 invoice_address: Object.keys(state.invoice_address).length ? state.invoice_address : JSON.parse(localStorage.getItem('invoice_address')),
-                shipping_address: Object.keys(state.shipping_address).length ? state.shipping_address : JSON.parse(localStorage.getItem('shipping_address')),
+                shipping_address: Object.keys(state.shipping_address).length ? state.shipping_address : ( !!localStorage.getItem('shipping_address') && Object.keys(JSON.parse(localStorage.getItem('shipping_address'))).length ? JSON.parse(localStorage.getItem('shipping_address')) : {}),
                 hasDifferentShippingAddress: state.hasDifferentShippingAddress
             }, {
                 headers: {
@@ -86,7 +87,12 @@ const OrderState = props => {
                 }
             });
 
-            return response.data.client_secret;
+            dispatch({
+                type: SET_STRIPE_CLIENT_SECRET,
+                payload: response.data.client_secret
+            });
+
+            return;
         } catch (error) {
             console.log(error.response);
             return error.response;
@@ -105,6 +111,7 @@ const OrderState = props => {
         });
 
         if (response.status) {
+            getCartProducts();
             removeCookie('cart_id');
             removeCookie('order_id');
             localStorage.removeItem('invoice_address');
@@ -128,6 +135,7 @@ const OrderState = props => {
                 invoice_address: state.invoice_address,
                 shipping_address: state.shipping_address,
                 hasDifferentShippingAddress: state.hasDifferentShippingAddress,
+                stripe_client_secret: state.stripe_client_secret,
                 addAddresses,
                 setDifferentShippingAddressVal,
                 createPaymentIntent,

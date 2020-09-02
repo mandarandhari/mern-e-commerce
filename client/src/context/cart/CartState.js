@@ -124,6 +124,8 @@ const CartState = (props) => {
 
                 if (response.data.products && response.data.products.length === 0) {
                     removeCookie('cart_id');
+                    localStorage.removeItem('invoice_address');
+                    localStorage.removeItem('shipping_address');
 
                     dispatch({
                         type: GET_CART_PRODUCTS_SUCCESS,
