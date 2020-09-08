@@ -4,9 +4,6 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const Cart = require('./../models/Cart');
 const Order = require('../models/Order');
-const InvoiceAddress = require('../models/InvoiceAddress');
-const ShippingAddress = require('../models/ShippingAddress');
-const OrderHasProducts = require('../models/OrderHasProducts');
 
 router.post('/create_payment_intent', async (req, res) => {
     const cartItems = await Cart.aggregate([
@@ -36,10 +33,12 @@ router.post('/create_payment_intent', async (req, res) => {
             price = price + (parseInt(cartItem.quantity) * parseInt(cartItem.product.price));
 
             _orderHasProducts.push({
-                order_id: req.body.order_id,
                 product_id: cartItem.product_id,
                 quantity: parseInt(cartItem.quantity),
                 size: cartItem.size,
+                title: cartItem.product.title,
+                description: cartItem.product.description,
+                image_url: cartItem.product.image_url,
                 price: parseInt(cartItem.product.price)
             })
         });
@@ -47,37 +46,32 @@ router.post('/create_payment_intent', async (req, res) => {
         await Order.create({
             order_id: req.body.order_id,
             customer_id: req.body.customer_id,
-            total_price: price
-        });
-
-        await OrderHasProducts.create(_orderHasProducts);
-
-        await InvoiceAddress.create({
-            order_id: req.body.order_id,
-            first_name: req.body.invoice_address.firstName,
-            last_name: req.body.invoice_address.lastName,
-            email: req.body.invoice_address.email,
-            phone: req.body.invoice_address.phone,
-            address1: req.body.invoice_address.address1,
-            address2: req.body.invoice_address.address2,
-            city: req.body.invoice_address.city,
-            postal_code: req.body.invoice_address.postalcode,
-            region: req.body.invoice_address.region,
-            country: req.body.invoice_address.country
-        });
-
-        await ShippingAddress.create({
-            order_id: req.body.order_id ,
-            first_name: req.body.invoice_address.firstName,
-            last_name: req.body.invoice_address.lastName,
-            email: req.body.invoice_address.email,
-            phone: req.body.invoice_address.phone,
-            address1: req.body.invoice_address.address1,
-            address2: req.body.invoice_address.address2,
-            city: req.body.invoice_address.city,
-            postal_code: req.body.invoice_address.postalcode,
-            region: req.body.invoice_address.region,
-            country: req.body.invoice_address.country
+            products: _orderHasProducts,
+            invoice_address: {
+                first_name: req.body.invoice_address.firstName,
+                last_name: req.body.invoice_address.lastName,
+                email: req.body.invoice_address.email,
+                phone: req.body.invoice_address.phone,
+                address1: req.body.invoice_address.address1,
+                address2: req.body.invoice_address.address2,
+                city: req.body.invoice_address.city,
+                postal_code: req.body.invoice_address.postalcode,
+                region: req.body.invoice_address.region,
+                country: req.body.invoice_address.country
+            },
+            shipping_address: {
+                first_name: req.body.invoice_address.firstName,
+                last_name: req.body.invoice_address.lastName,
+                email: req.body.invoice_address.email,
+                phone: req.body.invoice_address.phone,
+                address1: req.body.invoice_address.address1,
+                address2: req.body.invoice_address.address2,
+                city: req.body.invoice_address.city,
+                postal_code: req.body.invoice_address.postalcode,
+                region: req.body.invoice_address.region,
+                country: req.body.invoice_address.country
+            },
+            total_price: price + 50
         });
 
         var customer = await stripe.customers.create({
@@ -123,7 +117,7 @@ router.post('/create_payment_intent', async (req, res) => {
         }
 
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: price * 100,
+            amount: (price + 50) * 100,
             currency: 'inr',
             payment_method_types: ['card'],
             description: 'Purchasing T-shirt/s',
@@ -149,7 +143,7 @@ router.post('/place_order', async (req, res) => {
             }, {
                 transaction_id: req.body.transaction_id,
                 payment_status: 'succeeded',
-                order_status: 'processing'
+                order_status: 'pending'
             });
 
             await Cart.deleteMany({

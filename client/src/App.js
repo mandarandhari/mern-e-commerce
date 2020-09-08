@@ -20,6 +20,7 @@ import AuthState from './context/auth/AuthState';
 import ProductState from './context/product/ProductState';
 import CartState from './context/cart/CartState';
 import OrderState from './context/order/OrderState';
+import PrivateRoute from './components/PrivateRoutes';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
@@ -36,8 +37,9 @@ function App() {
                     <Route exact path="/" component={Main} />
                     <Route exact path="/about-us" component={Main} />
                     <Route exact path="/cart" component={Main} />
-                    <Route exact path="/checkout" component={Main} />
-                    <Route exact path="/payment" component={Main} />
+                    <PrivateRoute exact path="/checkout" component={Main} />
+                    <PrivateRoute exact path="/payment" component={Main} />
+                    <PrivateRoute exact path="/my-orders" component={Main} /> 
                   </Switch>
                 </BrowserRouter>
               </Elements>

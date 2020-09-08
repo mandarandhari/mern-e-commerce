@@ -12,7 +12,8 @@ import {
     SHOW_PROFILE_POPUP,
     HIDE_PROFILE_POPUP,
     UPDATE_PROFILE_SUCCESS,
-    UPDATE_PROFILE_FAILURE
+    UPDATE_PROFILE_FAILURE,
+    SET_MY_ORDERS
 } from "../../Types";
 
 export default (state, action) => {
@@ -104,6 +105,12 @@ export default (state, action) => {
             return {
                 ...state,
                 profileFormErrors: action.payload
+            }
+
+        case SET_MY_ORDERS:
+            return {
+                ...state,
+                myorders: action.payload
             }
 
         case CUSTOMER_LOGOUT:

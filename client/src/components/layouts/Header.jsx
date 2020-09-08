@@ -73,7 +73,7 @@ const Header = () => {
                                                         <a href="/#" className="expand" onClick={e => {e.preventDefault(); showProfile()}}>My Account</a>
                                                     </li>
                                                     <li className="list-inline-item" style={{ width: '100%' }}>
-                                                        <a href="/#">My Orders</a>
+                                                        <Link to="/my-orders">My Orders</Link>
                                                     </li>
                                                     <li className="list-inline-item" style={{ width: '100%' }}>
                                                         <a href="/#" onClick={() => logoutCustomer()}>Logout</a>

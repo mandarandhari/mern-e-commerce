@@ -11,6 +11,7 @@ import AuthContext from '../context/auth/AuthContext';
 import Profile from './auth/Profile';
 import Checkout from './order/Checkout';
 import Payment from './order/Payment';
+import MyOrders from './auth/MyOrders';
 
 const Main = () => {
     const { getCustomer, isLoggedIn } = useContext(AuthContext);
@@ -51,6 +52,9 @@ const Main = () => {
                                 case '/payment':
                                     return <Payment />
 
+                                case '/my-orders':
+                                    return <MyOrders />
+
                                 default: return
                             }
                         }
@@ -67,7 +71,6 @@ const Main = () => {
                     <Profile />
                 }
             )()}
-
         </>
     )
 }

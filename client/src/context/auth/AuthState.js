@@ -19,7 +19,8 @@ import {
     SHOW_PROFILE_POPUP,
     HIDE_PROFILE_POPUP,
     UPDATE_PROFILE_SUCCESS,
-    UPDATE_PROFILE_FAILURE
+    UPDATE_PROFILE_FAILURE,
+    SET_MY_ORDERS
 } from '../../Types';
 
 const AuthState = (props) => {
@@ -32,6 +33,7 @@ const AuthState = (props) => {
             phone: '',
             created_at: ''
         },
+        myorders: [],
         isLoggedIn: !!localStorage.getItem('token'),
         registerFormErrors: {
             firstName: '',
@@ -230,6 +232,8 @@ const AuthState = (props) => {
             showConfirmButton: false,
             timer: 1500
         });
+
+        window.location.href = '/';
     }
 
     const showLogin = () => {
@@ -295,11 +299,34 @@ const AuthState = (props) => {
         })
     }
 
+    const getOrders = async () => {
+        try {
+            let customerId = state.customer.id.length ? state.customer.id : ( !!localStorage.getItem('customer') ? JSON.parse(localStorage.getItem('customer')).id : '' );
+
+            if (customerId.length) {
+                const response = await axios.get('/my-orders/' + customerId, {
+                    headers: {
+                        'Authorization': localStorage.getItem('token'),
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                dispatch({
+                    type: SET_MY_ORDERS,
+                    payload: response.data.orders
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <>
             <AuthContext.Provider value={{
                 isLoggedIn: state.isLoggedIn,
                 customer: state.customer,
+                myorders: state.myorders,
                 registerFormErrors: state.registerFormErrors,
                 loginFormErrors: state.loginFormErrors,
                 registerCustomer,
@@ -316,7 +343,8 @@ const AuthState = (props) => {
                 profileFormErrors: state.profileFormErrors,
                 showProfile,
                 hideProfile,
-                updateCustomer
+                updateCustomer,
+                getOrders
             }}>{props.children}</AuthContext.Provider>
         </>
     )

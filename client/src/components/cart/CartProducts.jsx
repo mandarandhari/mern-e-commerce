@@ -39,7 +39,7 @@ const CartProducts = () => {
                 totalPrice = totalPrice + (p.price * p.quantity);
             });
 
-            setTotal(totalPrice);
+            setTotal(totalPrice + 50);
         }
     }, [cart.products]);
 
@@ -97,7 +97,7 @@ const CartProducts = () => {
             }
         });
 
-        setTotal(totalVal);
+        setTotal(totalVal + 50);
     }
 
     const addBtnClicked = cartProductId => {
@@ -226,6 +226,18 @@ const CartProducts = () => {
                             )
                         })
                     }
+                    </div>
+                </div>
+            </div>
+            <div className="total-price text-right mb-0">
+                <div className="container">
+                    <div className='row mb-5'>
+                        <div className="col-sm-9">
+                            <h4>Delivery Charges</h4>
+                        </div>
+                        <div className="col-sm-3">
+                            <h4><i className="fas fa-rupee-sign"></i>&nbsp;50</h4>
+                        </div>
                     </div>
                 </div>
             </div>
