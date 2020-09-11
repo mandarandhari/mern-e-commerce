@@ -10,16 +10,13 @@ import AuthContext from '../auth/AuthContext';
 
 import {
     ADD_ADDRESS,
-    HAS_DEFFERENT_SHIPPING_ADDRESS,
     SET_STRIPE_CLIENT_SECRET
 } from '../../Types';
 
 const OrderState = props => {
     const initialState = {
-        invoice_address: {},
         shipping_address: {},
-        stripe_client_secret: '',
-        hasDifferentShippingAddress: false
+        stripe_client_secret: ''
     }
 
     const [ state, dispatch ] = useReducer(OrderReducer, initialState);
@@ -40,26 +37,14 @@ const OrderState = props => {
         set_cart(cart);
     }, [ cart ]);
 
-    const addAddresses = (invoiceAddress, shippingAddress) => {
-        localStorage.setItem('invoice_address', JSON.stringify(invoiceAddress));
-
-        if (Object.keys(shippingAddress).length) {
-            localStorage.setItem('shipping_address', JSON.stringify(shippingAddress));
-        }
+    const addAddresses = shippingAddress => {
+        localStorage.setItem('invoice_address', JSON.stringify(shippingAddress));
 
         dispatch({
             type: ADD_ADDRESS,
             payload: {
-                invoice_address: invoiceAddress,
                 shipping_address: shippingAddress
             }
-        });
-    }
-
-    const setDifferentShippingAddressVal = val => {
-        dispatch({
-            type: HAS_DEFFERENT_SHIPPING_ADDRESS,
-            payload: val
         });
     }
 
@@ -78,11 +63,10 @@ const OrderState = props => {
                 cart_id: _cart.cart_id ? _cart.cart_id : cookies.cart_id,
                 customer_id: _customer.id ? _customer.id : JSON.parse(localStorage.getItem('customer')).id,
                 order_id: orderId,
-                invoice_address: Object.keys(state.invoice_address).length ? state.invoice_address : JSON.parse(localStorage.getItem('invoice_address')),
-                shipping_address: Object.keys(state.shipping_address).length ? state.shipping_address : ( !!localStorage.getItem('shipping_address') && Object.keys(JSON.parse(localStorage.getItem('shipping_address'))).length ? JSON.parse(localStorage.getItem('shipping_address')) : {}),
-                hasDifferentShippingAddress: state.hasDifferentShippingAddress
+                shipping_address: Object.keys(state.shipping_address).length ? state.shipping_address : JSON.parse(localStorage.getItem('shipping_address'))
             }, {
                 headers: {
+                    'Authorization': localStorage.getItem('token'),
                     'Content-Type': 'application/json'
                 }
             });
@@ -106,6 +90,7 @@ const OrderState = props => {
             cart_id: cookies.cart_id
         }, {
             headers: {
+                'Authorization': localStorage.getItem('token'),
                 'Content-Type': 'application/json'
             }
         });
@@ -132,12 +117,9 @@ const OrderState = props => {
     return (
         <>
             <OrderContext.Provider value={{
-                invoice_address: state.invoice_address,
                 shipping_address: state.shipping_address,
-                hasDifferentShippingAddress: state.hasDifferentShippingAddress,
                 stripe_client_secret: state.stripe_client_secret,
                 addAddresses,
-                setDifferentShippingAddressVal,
                 createPaymentIntent,
                 placeOrder
             }}>

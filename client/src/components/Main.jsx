@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import Home from './home/Home';
 import About from './about/About';
 import Cart from './cart/Cart';
@@ -12,11 +11,10 @@ import Profile from './auth/Profile';
 import Checkout from './order/Checkout';
 import Payment from './order/Payment';
 import MyOrders from './auth/MyOrders';
+import OrderDetails from './auth/OrderDetails';
 
-const Main = () => {
-    const { getCustomer, isLoggedIn } = useContext(AuthContext);
-
-    const location = useLocation();
+const Main = props => {
+    const { getCustomer, isLoggedIn, showRegisterPopup, showLoginPopup, showProfilePopup } = useContext(AuthContext);
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -36,7 +34,7 @@ const Main = () => {
                 {
                     (
                         () => {
-                            switch (location.pathname) {
+                            switch (props.match.path) {
                                 case '/':
                                     return <Home />
 
@@ -55,22 +53,18 @@ const Main = () => {
                                 case '/my-orders':
                                     return <MyOrders />
 
+                                case '/order/:id':
+                                    return <OrderDetails orderId={props.match.params.id} />
+
                                 default: return
                             }
                         }
                     )()
                 }
             <Footer />
-            {(
-                () => {
-                    return !isLoggedIn ?
-                    <>
-                        <Login />
-                        <Register />
-                    </> :
-                    <Profile />
-                }
-            )()}
+            {showLoginPopup && <Login />}
+            {showRegisterPopup && <Register />} 
+            {showProfilePopup && <Profile />}
         </>
     )
 }

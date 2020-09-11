@@ -174,7 +174,7 @@ const Payment = () => {
                                             style: {
                                                 base: {
                                                     lineHeight: '60px',
-                                                    fontSize: '1.2rem',
+                                                    fontSize: '16px',
                                                     fontWeight: 400,
                                                     color: '#495057',
                                                     fontFamily: '"Open Sans", sans-serif'
@@ -192,7 +192,7 @@ const Payment = () => {
                                             style: {
                                                 base: {
                                                     lineHeight: '60px',
-                                                    fontSize: '1.2rem',
+                                                    fontSize: '16px',
                                                     fontWeight: 400,
                                                     color: '#495057',
                                                     fontFamily: '"Open Sans", sans-serif'
@@ -210,7 +210,7 @@ const Payment = () => {
                                             style: {
                                                 base: {
                                                     lineHeight: '60px',
-                                                    fontSize: '1.2rem',
+                                                    fontSize: '16px',
                                                     fontWeight: 400,
                                                     color: '#495057',
                                                     fontFamily: '"Open Sans", sans-serif'

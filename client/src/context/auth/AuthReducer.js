@@ -13,7 +13,8 @@ import {
     HIDE_PROFILE_POPUP,
     UPDATE_PROFILE_SUCCESS,
     UPDATE_PROFILE_FAILURE,
-    SET_MY_ORDERS
+    SET_MY_ORDERS,
+    SET_ORDER_DETAILS
 } from "../../Types";
 
 export default (state, action) => {
@@ -111,6 +112,12 @@ export default (state, action) => {
             return {
                 ...state,
                 myorders: action.payload
+            }
+
+        case SET_ORDER_DETAILS:
+            return {
+                ...state,
+                order_details: action.payload
             }
 
         case CUSTOMER_LOGOUT:

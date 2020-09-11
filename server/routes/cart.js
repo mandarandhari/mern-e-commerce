@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const mongoose = require('mongoose');
 
 const Product = require('../models/Product');
 const Cart = require('../models/Cart');
@@ -8,51 +9,45 @@ router.post('/', async (req, res) => {
         const product = await Product.findById(req.body.product_id);
 
         if (product) {
-            const cartProduct = new Cart({
-                cart_id: req.body.cart_id,
-                product_id: req.body.product_id,
-                quantity: req.body.quantity,
-                size: req.body.size
+            const cart = await Cart.findOne({
+                cart_id: req.body.cart_id
             });
 
-            await cartProduct.save();
+            const products_arr = [];
 
-            const cart = await Cart.aggregate(
-                [
-                    {
-                        $match: {
-                            cart_id: req.body.cart_id
-                        }
-                    }, {
-                        $lookup: {
-                            from: 'products',
-                            localField: 'product_id',
-                            foreignField: '_id',
-                            as: 'product'
-                        }
-                    },{
-                        $unwind: '$product'
-                    }
-                ]
-            );
-
-            let cartProducts = [];
-
-            cart.forEach(c => {
-                cartProducts.push({
-                    _id: c._id,
-                    product_id: c.product_id,
-                    quantity: c.quantity,
-                    size: c.size,
-                    title: c.product.title,
-                    price: c.product.price,
-                    image: c.product.image_url
+            if (cart === null) {
+                await Cart.create({
+                    cart_id: req.body.cart_id,
+                    created_at: Date.now()
                 });
-            })
+            } else {
+                cart.products.forEach(old_product => {
+                    products_arr.push(old_product);
+                });
+            }
+
+            products_arr.push({
+                product_id: product._id,
+                title: product.title,
+                description: product.description,
+                price: product.price,
+                image_url: product.image_url,
+                size: req.body.size,
+                quantity: req.body.quantity
+            });
+
+            const updated_cart = await Cart.findOneAndUpdate({
+                cart_id: req.body.cart_id
+            }, {
+                products: products_arr,
+                updated_at: Date.now()
+            }, {
+                new: true
+            });
 
             return res.status(200).json({
                 cart_id: req.body.cart_id,
-                products: cartProducts
+                products: updated_cart.products
             });
         } else {
             return res.status(400).json({
@@ -70,43 +65,14 @@ router.post('/', async (req, res) => {
 
 router.get('/:cart_id', async (req, res) => {
     try {
-        const cart = await Cart.aggregate(
-            [
-                {
-                    $match: {
-                        cart_id: req.params.cart_id
-                    }
-                }, {
-                    $lookup: {
-                        from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
-                        as: 'product'
-                    }
-                },{
-                    $unwind: '$product'
-                }
-            ]
-        );
+        const cart = await Cart.findOne({
+            cart_id: req.params.cart_id
+        });
 
         if (cart) {
-            let cartProducts = [];
-
-            cart.forEach(c => {
-                cartProducts.push({
-                    _id: c._id,
-                    product_id: c.product_id,
-                    quantity: c.quantity,
-                    size: c.size,
-                    title: c.product.title,
-                    price: c.product.price,
-                    image: c.product.image_url
-                });
-            })
-
             return res.status(200).json({
                 cart_id: req.params.cart_id,
-                products: cartProducts
+                products: cart.products
             });
         } else {
             return res.status(200).json({});
@@ -120,13 +86,52 @@ router.get('/:cart_id', async (req, res) => {
     }
 });
 
-router.delete('/:product_id', async (req, res) => {
+router.post('/delete/:cart_id', async (req, res) => {
     try {
-        await Cart.findByIdAndDelete(req.params.product_id);
+        const cart = await Cart.findOne({
+            cart_id: req.params.cart_id
+        });
 
-        return res.status(200).json({
-            status: true
-        })
+        if (cart) {
+            const cartProducts = [];
+
+            cart.products.forEach(product => {
+                if (product.product_id.toString() !== req.body.product_id) {
+                    cartProducts.push({
+                        product_id: mongoose.Types.ObjectId(product.product_id),
+                        title: product.title,
+                        description: product.description,
+                        price: product.price,
+                        image_url: product.image_url,
+                        size: product.size,
+                        quantity: product.quantity
+                    });
+                }
+            });
+
+            if (cartProducts.length) {
+                await Cart.findOneAndUpdate({
+                    cart_id: req.params.cart_id
+                }, {
+                    products: cartProducts
+                }, {
+                    new: true
+                });
+            } else {
+                await Cart.deleteOne({
+                    cart_id: req.params.cart_id
+                });
+            }
+
+            return res.json({
+                cart_id: req.params.cart_id,
+                products: cartProducts
+            });
+        } else {
+            return res.json({
+                msg: 'Something went wrong'
+            });
+        }
     } catch (error) {
         console.log(e);
 
@@ -136,15 +141,44 @@ router.delete('/:product_id', async (req, res) => {
     }
 });
 
-router.put('/:product__id', async(req, res) => {
+router.put('/update/:cart_id', async(req, res) => {
     try {
-        await Cart.findByIdAndUpdate(req.params.product__id, {
-            quantity: req.body.quantity
+        const cart = await Cart.findOne({
+            cart_id: req.params.cart_id
         });
 
-        return res.status(200).json({
-            status: true
-        });
+        if (cart) {
+            let cartProducts = []
+
+            req.body.products.forEach(product => {
+                cartProducts.push({
+                    product_id: mongoose.Types.ObjectId(product.product_id),
+                    title: product.title,
+                    description: product.description,
+                    price: product.price,
+                    image_url: product.image_url,
+                    size: product.size,
+                    quantity: product.quantity
+                })
+            })
+
+            const cart =  await Cart.findOneAndUpdate({
+                cart_id: req.params.cart_id
+            }, {
+                products: cartProducts
+            }, {
+                new: true
+            });
+
+            return res.status(200).json({
+                cart_id: req.params.cart_id,
+                products: cart.products
+            });
+        } else {
+            return res.json({
+                msg: 'Something went wrong'
+            })
+        }
     } catch (error) {
         return res.status(500).json({
             msg: 'Something went wrong'

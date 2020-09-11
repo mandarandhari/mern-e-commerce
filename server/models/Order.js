@@ -14,10 +14,6 @@ const OrderSchema = mongoose.Schema({
         type: Array,
         required: true
     },
-    invoice_address: {
-        type: Object,
-        required: true
-    },
     shipping_address: {
         type: Object,
         required: true

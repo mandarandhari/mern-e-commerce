@@ -20,7 +20,8 @@ import {
     HIDE_PROFILE_POPUP,
     UPDATE_PROFILE_SUCCESS,
     UPDATE_PROFILE_FAILURE,
-    SET_MY_ORDERS
+    SET_MY_ORDERS,
+    SET_ORDER_DETAILS
 } from '../../Types';
 
 const AuthState = (props) => {
@@ -34,6 +35,7 @@ const AuthState = (props) => {
             created_at: ''
         },
         myorders: [],
+        order_details: {},
         isLoggedIn: !!localStorage.getItem('token'),
         registerFormErrors: {
             firstName: '',
@@ -233,7 +235,7 @@ const AuthState = (props) => {
             timer: 1500
         });
 
-        window.location.href = '/';
+        // window.location.href = '/';
     }
 
     const showLogin = () => {
@@ -284,7 +286,6 @@ const AuthState = (props) => {
                 type: CUSTOMER_GET_FAILURE
             })
         }
-        
     }
 
     const showProfile = () => {
@@ -313,11 +314,33 @@ const AuthState = (props) => {
 
                 dispatch({
                     type: SET_MY_ORDERS,
-                    payload: response.data.orders
+                    payload: response.data
                 });
             }
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    const getOrderByOrderId = async (order_id) => {
+        try {
+            let customerId = state.customer.id.length ? state.customer.id : ( !!localStorage.getItem('customer') ? JSON.parse(localStorage.getItem('customer')).id : '' );
+
+            if (customerId.length) {
+                const response = await axios.get('/order/' + customerId + '/' + order_id, {
+                    headers: {
+                        'Authorization': localStorage.getItem('token'),
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                dispatch({
+                    type: SET_ORDER_DETAILS,
+                    payload: response.data
+                });
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -327,6 +350,7 @@ const AuthState = (props) => {
                 isLoggedIn: state.isLoggedIn,
                 customer: state.customer,
                 myorders: state.myorders,
+                order_details: state.order_details,
                 registerFormErrors: state.registerFormErrors,
                 loginFormErrors: state.loginFormErrors,
                 registerCustomer,
@@ -344,7 +368,8 @@ const AuthState = (props) => {
                 showProfile,
                 hideProfile,
                 updateCustomer,
-                getOrders
+                getOrders,
+                getOrderByOrderId
             }}>{props.children}</AuthContext.Provider>
         </>
     )

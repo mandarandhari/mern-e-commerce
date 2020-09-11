@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 import ProductContext from '../../context/product/ProductContext';
 import CartContext from '../../context/cart/CartContext';
 
 const CartPopup = props => {
     const { showProductPopup, hideProduct } = useContext(ProductContext);
-    const { cart, addToCart, updateCartProduct } = useContext(CartContext);
+    const { cart, addToCart, updateCart } = useContext(CartContext);
 
     const [ cartData, setCartData ] = useState({
         size: '',
@@ -13,7 +14,13 @@ const CartPopup = props => {
         price: 0
     });
 
+    const [ cartProducts, setCartProducts ] = useState([]);
+
     const [ isAlreadyAddedInCart, setIsAlreadyAddedInCart ] = useState(false);
+
+    useEffect(() => {
+        setCartProducts(cart.products);
+    }, [ cart.products ])
 
     useEffect(() => {
         if (Object.keys(props).length) {
@@ -53,43 +60,51 @@ const CartPopup = props => {
         }
     }, [showProductPopup])
 
-    const addProductToCart = (productData) => {
-        let productAdd = [];
-        let productUpdate = {};
-
+    const addProductToCart = async productData => {
         setIsAlreadyAddedInCart(false);
 
-        if (cartData.size !== '') {
-            if (cart.products && cart.products.length) {
-                cart.products.map(c => {
-                    if (c.product_id === productData._id && c.size === cartData.size) {
-                        if (c.quantity !== cartData.quantity) {
-                            productUpdate = c;
-                        } else {
-                            productAdd.push(c);
-                        }
+        if (cartProducts !== undefined) {
+            let cartProductUpdated = false;
+            let cartProductsArray = [];
+
+            cartProducts.forEach(cartProduct => {
+                if (cartProduct.product_id === productData._id) {
+                    if (cartProduct.size === cartData.size) {
+                        cartProductsArray.push({
+                            ...cartProduct,
+                            quantity: cartData.quantity
+                        });
+
+                        cartProductUpdated = true;
                     }
+                } else {
+                    cartProductsArray.push(cartProduct);
+                }
+            });
+
+            if (cartProductUpdated) {
+                await updateCart(cartProductsArray);
+
+                Swal.fire({
+                    title: 'Success!',
+                    icon: 'success',
+                    text: 'Product updated in the cart',
+                    showConfirmButton: false,
+                    timer: 1500
                 });
-            }
-    
-            if (Object.keys(productUpdate).length) {
-                updateCartProduct({
-                    __id: productUpdate._id,
-                    quantity: cartData.quantity
-                });
-    
-                return false;
-            }
-    
-            if (!productAdd.length) {
+            } else {
                 addToCart({
                     _id: productData._id,
                     size: cartData.size,
                     quantity: cartData.quantity
                 });
-            } else {
-                setIsAlreadyAddedInCart(true);
             }
+        } else {
+            addToCart({
+                _id: productData._id,
+                size: cartData.size,
+                quantity: cartData.quantity
+            });
         }
     }
 

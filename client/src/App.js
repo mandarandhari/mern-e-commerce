@@ -39,7 +39,8 @@ function App() {
                     <Route exact path="/cart" component={Main} />
                     <PrivateRoute exact path="/checkout" component={Main} />
                     <PrivateRoute exact path="/payment" component={Main} />
-                    <PrivateRoute exact path="/my-orders" component={Main} /> 
+                    <PrivateRoute exact path="/my-orders" component={Main} />
+                    <PrivateRoute exact path="/order/:id" component={Main} />
                   </Switch>
                 </BrowserRouter>
               </Elements>

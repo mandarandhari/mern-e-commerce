@@ -2,118 +2,62 @@ const router = require('express').Router();
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
+const auth = require('./../middlewares/auth');
 const Cart = require('./../models/Cart');
 const Order = require('../models/Order');
 
-router.post('/create_payment_intent', async (req, res) => {
-    const cartItems = await Cart.aggregate([
-        {
-            $match: {
-                cart_id: req.body.cart_id
-            }
-        }, {
-            $lookup: {
-                from: 'products',
-                localField: 'product_id',
-                foreignField: '_id',
-                as: 'product'
-            },
-            
-        }, {
-            $unwind: '$product'
-        }
-    ]);
+router.post('/create_payment_intent', auth, async (req, res) => {
+    const cart = await Cart.findOne({
+        cart_id: req.body.cart_id
+    });
 
-    if (cartItems) {
+    if (cart) {
         let price = 0;
-        let shipping_details = {};
-        let _orderHasProducts = [];
-
-        cartItems.forEach(cartItem => {
-            price = price + (parseInt(cartItem.quantity) * parseInt(cartItem.product.price));
-
-            _orderHasProducts.push({
-                product_id: cartItem.product_id,
-                quantity: parseInt(cartItem.quantity),
-                size: cartItem.size,
-                title: cartItem.product.title,
-                description: cartItem.product.description,
-                image_url: cartItem.product.image_url,
-                price: parseInt(cartItem.product.price)
-            })
-        });
 
         await Order.create({
             order_id: req.body.order_id,
             customer_id: req.body.customer_id,
-            products: _orderHasProducts,
-            invoice_address: {
-                first_name: req.body.invoice_address.firstName,
-                last_name: req.body.invoice_address.lastName,
-                email: req.body.invoice_address.email,
-                phone: req.body.invoice_address.phone,
-                address1: req.body.invoice_address.address1,
-                address2: req.body.invoice_address.address2,
-                city: req.body.invoice_address.city,
-                postal_code: req.body.invoice_address.postalcode,
-                region: req.body.invoice_address.region,
-                country: req.body.invoice_address.country
-            },
+            products: cart.products,
             shipping_address: {
-                first_name: req.body.invoice_address.firstName,
-                last_name: req.body.invoice_address.lastName,
-                email: req.body.invoice_address.email,
-                phone: req.body.invoice_address.phone,
-                address1: req.body.invoice_address.address1,
-                address2: req.body.invoice_address.address2,
-                city: req.body.invoice_address.city,
-                postal_code: req.body.invoice_address.postalcode,
-                region: req.body.invoice_address.region,
-                country: req.body.invoice_address.country
+                first_name: req.body.shipping_address.firstName,
+                last_name: req.body.shipping_address.lastName,
+                email: req.body.shipping_address.email,
+                phone: req.body.shipping_address.phone,
+                address1: req.body.shipping_address.address1,
+                address2: req.body.shipping_address.address2,
+                city: req.body.shipping_address.city,
+                postal_code: req.body.shipping_address.postalcode,
+                region: req.body.shipping_address.region,
+                country: req.body.shipping_address.country
             },
             total_price: price + 50
         });
 
         var customer = await stripe.customers.create({
-            name: req.body.invoice_address.firstName + ' ' + req.body.invoice_address.lastName,
-            email: req.body.invoice_address.email,
-            phone: req.body.invoice_address.phone,
+            name: req.body.shipping_address.firstName + ' ' + req.body.shipping_address.lastName,
+            email: req.body.shipping_address.email,
+            phone: req.body.shipping_address.phone,
             address: {
-                line1: req.body.invoice_address.address1,
-                line2: req.body.invoice_address.address2,
-                postal_code: req.body.invoice_address.postalcode,
-                city: req.body.invoice_address.city,
-                state: req.body.invoice_address.region,
-                country: req.body.invoice_address.country
+                line1: req.body.shipping_address.address1,
+                line2: req.body.shipping_address.address2,
+                postal_code: req.body.shipping_address.postalcode,
+                city: req.body.shipping_address.city,
+                state: req.body.shipping_address.region,
+                country: req.body.shipping_address.country
             }
         });
 
-        if (req.body.hasDifferentShippingAddress) {
-            shipping_details = {
-                name: req.body.shipping_address.firstName + ' ' + req.body.shipping_address.lastName,
-                address: {
-                    line1: req.body.shipping_address.address1,
-                    line2: req.body.shipping_address.address2,
-                    postal_code: req.body.shipping_address.postalcode,
-                    city: req.body.shipping_address.city,
-                    state: req.body.shipping_address.region,
-                    country: req.body.shipping_address.country
-                },
-                phone: req.body.shipping_address.phone
-            }
-        } else {
-            shipping_details = {
-                name: req.body.invoice_address.firstName + ' ' + req.body.invoice_address.lastName,
-                address: {
-                    line1: req.body.invoice_address.address1,
-                    line2: req.body.invoice_address.address2,
-                    postal_code: req.body.invoice_address.postalcode,
-                    city: req.body.invoice_address.city,
-                    state: req.body.invoice_address.region,
-                    country: req.body.invoice_address.country
-                },
-                phone: req.body.invoice_address.phone
-            }
+        let shipping_details = {
+            name: req.body.shipping_address.firstName + ' ' + req.body.shipping_address.lastName,
+            address: {
+                line1: req.body.shipping_address.address1,
+                line2: req.body.shipping_address.address2,
+                postal_code: req.body.shipping_address.postalcode,
+                city: req.body.shipping_address.city,
+                state: req.body.shipping_address.region,
+                country: req.body.shipping_address.country
+            },
+            phone: req.body.shipping_address.phone
         }
 
         const paymentIntent = await stripe.paymentIntents.create({
@@ -135,7 +79,7 @@ router.post('/create_payment_intent', async (req, res) => {
     }
 });
 
-router.post('/place_order', async (req, res) => {
+router.post('/place_order', auth, async (req, res) => {
     try {
         if (req.body.transaction_id) {
             await Order.findOneAndUpdate({
@@ -167,6 +111,39 @@ router.post('/place_order', async (req, res) => {
         return res.status(200).json({
             status: false,
             msg: 'Order updated'
+        });
+    }
+});
+
+router.get('/:customer_id/:order_id', auth, async (req, res) => {
+    if ((req.params.order_id !== undefined || req.params.order_id.length) && (req.params.customer_id !== undefined || req.params.customer_id.length)) {
+        const order = await Order.findOne({
+            order_id: req.params.order_id,
+            customer_id: req.params.customer_id,
+            order_status: {
+                $ne: null
+            }
+        }, {
+            created_at: 1,
+            invoice_address: 1,
+            order_id: 1,
+            order_status: 1,
+            products: 1,
+            shipping_address: 1,
+            total_price: 1,
+            updated_at: 1
+        });
+
+        if (order) {
+            return res.status(200).json(order);
+        } else {
+            return res.status(500).json({
+                msg: 'Something went wrong'
+            });
+        }
+    } else {
+        return res.status(500).json({
+            msg: 'Something went wrong'
         });
     }
 });

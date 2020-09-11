@@ -6,7 +6,7 @@ import CartContext from '../../context/cart/CartContext';
 import AuthContext from '../../context/auth/AuthContext';
 
 const CartProducts = () => {
-    const { cart, removeFromCart, updateCartProduct } = useContext(CartContext);
+    const { cart, removeFromCart, updateCart } = useContext(CartContext);
     const { isLoggedIn, showLogin } = useContext(AuthContext);
 
     const history = useHistory();
@@ -25,13 +25,13 @@ const CartProducts = () => {
                     return [
                         ...prevData,
                         {
-                            _id: p._id,
                             product_id: p.product_id,
                             quantity: p.quantity,
                             size: p.size,
                             title: p.title,
+                            description: p.description,
                             price: p.price,
-                            image: p.image
+                            image_url: p.image_url
                         }
                     ]
                 });
@@ -43,20 +43,26 @@ const CartProducts = () => {
         }
     }, [cart.products]);
 
-    const minusBtnClicked = cartProductId => {
-        setProductData(prevData => {
+    const minusBtnClicked = async cartProductId => {
+        let deleteProduct = false;
+
+        await setProductData(prevData => {
             let newData = [];
 
             prevData.map(prevD => {
                 let newObj = prevD;
 
-                if (prevD._id === cartProductId && prevD.quantity > 1) {
-                    newObj = {
-                        ...newObj,
-                        quantity: newObj.quantity - 1
-                    }
+                if (prevD.product_id === cartProductId) {
+                    if (prevD.quantity > 1) {
+                        newObj = {
+                            ...newObj,
+                            quantity: newObj.quantity - 1
+                        }
 
-                    setTotal(parseInt(total) - parseInt(prevD.price))
+                        setTotal(parseInt(total) - parseInt(prevD.price))
+                    } else {
+                        deleteProduct = true;
+                    }
                 }
 
                 newData.push(newObj);
@@ -64,40 +70,48 @@ const CartProducts = () => {
 
             return newData;
         });
+
+        if (deleteProduct) {
+            deleteProductBtnClicked(cartProductId)
+        }
     }
 
     const inputFieldChanged = (cartProductId, quantityValue) => {
-        setProductData(prevData => {
-            let newData = [];
+        if (parseInt(quantityValue) === 0) {
+            deleteProductBtnClicked(cartProductId);
+        } else {
+            setProductData(prevData => {
+                let newData = [];
 
-            prevData.map(prevD => {
-                let newObj = prevD;
+                prevData.map(prevD => {
+                    let newObj = prevD;
 
-                if (prevD._id === cartProductId && (parseInt(quantityValue) >= 1 || quantityValue === '')) {
-                    newObj = {
-                        ...newObj,
-                        quantity: quantityValue === '' ? '' : parseInt(quantityValue)
+                    if (prevD.product_id === cartProductId && (parseInt(quantityValue) >= 1 || quantityValue === '')) {
+                        newObj = {
+                            ...newObj,
+                            quantity: quantityValue === '' ? '' : parseInt(quantityValue)
+                        }
                     }
-                }
 
-                newData.push(newObj);
+                    newData.push(newObj);
+                });
+
+                return newData;
             });
 
-            return newData;
-        });
+            let totalVal = 0;
 
-        let totalVal = 0;
+            productData.forEach(p => {
+                if (p._id === cartProductId) {
+                    const totalValue = quantityValue === '' ? 0 : (parseInt(p.price) * parseInt(quantityValue))
+                    totalVal = parseInt(totalVal) + parseInt(totalValue);
+                } else {
+                    totalVal = totalVal + (parseInt(p.price) * parseInt(p.quantity));
+                }
+            });
 
-        productData.forEach(p => {
-            if (p._id === cartProductId) {
-                const totalValue = quantityValue === '' ? 0 : (parseInt(p.price) * parseInt(quantityValue))
-                totalVal = parseInt(totalVal) + parseInt(totalValue);
-            } else {
-                totalVal = totalVal + (parseInt(p.price) * parseInt(p.quantity));
-            }
-        });
-
-        setTotal(totalVal + 50);
+            setTotal(totalVal + 50);
+        }
     }
 
     const addBtnClicked = cartProductId => {
@@ -107,7 +121,7 @@ const CartProducts = () => {
             prevData.map(prevD => {
                 let newObj = prevD;
 
-                if (prevD._id === cartProductId) {
+                if (prevD.product_id === cartProductId) {
                     newObj = {
                         ...newObj,
                         quantity: newObj.quantity + 1
@@ -123,25 +137,6 @@ const CartProducts = () => {
         });
     }
 
-    const updateProductBtnClicked = cartProductId => {
-        let quantity = 0;
-
-        productData.forEach(prodData => {
-            if (prodData._id === cartProductId) {
-                if (prodData.quantity !== '') {
-                    quantity = prodData.quantity;
-                }
-            }
-        });
-
-        if (quantity > 0) {
-            updateCartProduct({
-                __id: cartProductId,
-                quantity: quantity
-            });
-        }
-    }
-
     const deleteProductBtnClicked = productId => {
         Swal.fire({
             title: 'Remove from cart',
@@ -151,12 +146,16 @@ const CartProducts = () => {
             confirmButtonText: 'Yes',
             showCancelButton: true,
             cancelButtonText: 'No'
-        }).then(() => {
-            removeFromCart(productId);
+        }).then((result) => {
+            if (result.isConfirmed) {
+                removeFromCart(productId);
+            }
         })
     }
 
-    const paymentBtnClicked = () => {
+    const checkoutBtnClicked = async () => {
+        await updateCart(productData);
+
         if (isLoggedIn) {
             history.push('/checkout');
         } else {
@@ -187,7 +186,7 @@ const CartProducts = () => {
                                         <div className="col-sm-5">
                                             <div className="product-overview clearfix">
                                                 <div className="product-img float-left">
-                                                    <img src={product.image} alt="t-shirt" className="img-fluid" />
+                                                    <img src={product.image_url} alt="t-shirt" className="img-fluid" />
                                                 </div>
                                                 <div className="product-details float-left">
                                                     <h3>{product.title}</h3>
@@ -203,9 +202,9 @@ const CartProducts = () => {
                                         </div>
                                         <div className="col-sm-2">
                                             <div className="product-quantity">
-                                                <div className="minus-btn" onClick={() => minusBtnClicked(product._id)}><i className="fa fa-minus"></i></div>
-                                                <input type="text" value={product.quantity} className="quantity" onChange={e => inputFieldChanged(product._id, e.target.value)} />
-                                                <div className="plus-btn" onClick={() => addBtnClicked(product._id)}><i className="fa fa-plus"></i></div>
+                                                <div className="minus-btn" onClick={() => minusBtnClicked(product.product_id)}><i className="fa fa-minus"></i></div>
+                                                <input type="text" value={product.quantity} className="quantity" onChange={e => inputFieldChanged(product.product_id, e.target.value)} />
+                                                <div className="plus-btn" onClick={() => addBtnClicked(product.product_id)}><i className="fa fa-plus"></i></div>
                                             </div>
                                         </div>
                                         <div className="col-sm-2">
@@ -214,10 +213,7 @@ const CartProducts = () => {
                                         <div className="col-sm-1">
                                             <div className="row">
                                                 <div className="col-sm-12">
-                                                    <button className="btn btn-sm btn-primary" style={{ padding: '6px' }} onClick={() => updateProductBtnClicked(product._id)}><i className="fa fa-check"></i></button>
-                                                </div>
-                                                <div className="col-sm-12 mt-2">
-                                                    <button className="btn btn-sm btn-danger" style={{ padding: '6px' }} onClick={() => deleteProductBtnClicked(product._id)}><i className="fa fa-trash-alt"></i></button>
+                                                    <button className="btn btn-sm btn-danger" style={{ padding: '6px' }} onClick={() => deleteProductBtnClicked(product.product_id)}><i className="fa fa-trash-alt"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -249,7 +245,7 @@ const CartProducts = () => {
             </div>
             <div className="total-price text-right">
                 <div className="container">
-                    <button className="btn btn-md btn-primary" onClick={paymentBtnClicked}>Go to checkout page</button>
+                    <button className="btn btn-md btn-primary" onClick={checkoutBtnClicked}>Update cart and checkout</button>
                 </div>
             </div>
         </>

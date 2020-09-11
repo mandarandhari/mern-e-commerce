@@ -71,39 +71,61 @@ const CartState = (props) => {
         }
     }
 
-    const updateCartProduct = async product => {
-        await axios.put('/cart/' + product.__id, {
-            quantity: product.quantity
+    const updateCart = async products => {
+        const response = await axios.put('/cart/update/' + state.cart.cart_id, {
+            products: products
         }, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
 
+        if (response.data.products && response.data.products.length === 0) {
+            removeCookie('cart_id');
+            localStorage.removeItem('invoice_address');
+            localStorage.removeItem('shipping_address');
+
+            dispatch({
+                type: GET_CART_PRODUCTS_SUCCESS,
+                payload: {}
+            });
+        } else {
+            dispatch({
+                type: GET_CART_PRODUCTS_SUCCESS,
+                payload: response.data
+            });
+        }
+
         if (showProductPopup) {
             hideProduct();
         }
-
-        Swal.fire({
-            title: 'Success!',
-            icon: 'success',
-            text: 'Product in the cart updated',
-            showConfirmButton: false,
-            timer: 1500
-        });
-
-        getCartProducts();
     }
 
     const removeFromCart = async product__id => {
         try {
-            await axios.delete('/cart/' + product__id, {
+            const response = await axios.post(`/cart/delete/${state.cart.cart_id}`, {
+                product_id: product__id
+            }, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
 
-            getCartProducts();
+            if (response.data.products && response.data.products.length === 0) {
+                removeCookie('cart_id');
+                localStorage.removeItem('invoice_address');
+                localStorage.removeItem('shipping_address');
+
+                dispatch({
+                    type: GET_CART_PRODUCTS_SUCCESS,
+                    payload: {}
+                });
+            } else {
+                dispatch({
+                    type: GET_CART_PRODUCTS_SUCCESS,
+                    payload: response.data
+                });
+            }
         } catch (e) {
             console.log(e.response);
 
@@ -152,7 +174,7 @@ const CartState = (props) => {
                 addToCart,
                 removeFromCart,
                 getCartProducts,
-                updateCartProduct
+                updateCart
             }}>
                 {props.children}
             </CartContext.Provider>
