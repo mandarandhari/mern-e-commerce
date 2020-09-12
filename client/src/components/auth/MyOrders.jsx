@@ -25,7 +25,7 @@ const MyOrders = () => {
                         <h1>My Orders</h1>
                     </div>
                 </div>
-                { orders.length && orders.map((order, i) => {
+                { orders.length ? orders.map((order, i) => {
                     return (
                         <React.Fragment key={i}>
                             <div className="cart-holder mb-5" style={{ marginTop: i === 0 ? '60px' : '120px' }}>
@@ -79,7 +79,10 @@ const MyOrders = () => {
                             </div>
                         </React.Fragment>
                     )
-                }) }
+                }) : 
+                <>
+                    <p className="text-center mb-5">You haven't placed any order yet</p>
+                </>}
             </div>
         </>
     )

@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+
 import ProductContext from '../../context/product/ProductContext';
 import CartContext from '../../context/cart/CartContext';
 
 const BigProduct = () => {
     const { banner_product } = useContext(ProductContext);
-    const { addToCart } = useContext(CartContext);
+    const { cart, addToCart, updateCart } = useContext(CartContext);
 
     const [productData, setProductData] = useState({});
     const [cartData, setCartData] = useState({
@@ -12,6 +14,10 @@ const BigProduct = () => {
         quantity: 1,
         price: 0
     });
+
+    const [ cartProducts, setCartProducts ] = useState([]);
+
+    const [ isAlreadyAddedInCart, setIsAlreadyAddedInCart ] = useState(false);
 
     useEffect(() => {
         setProductData({
@@ -24,6 +30,10 @@ const BigProduct = () => {
             price: banner_product.price
         });
     }, [banner_product]);
+
+    useEffect(() => {
+        setCartProducts(cart.products);
+    }, [ cart.products ]);
 
     useEffect(() => {
         const defaultSize = productData && productData.size ? 
@@ -77,12 +87,61 @@ const BigProduct = () => {
         }
     }
 
-    const addProductToCart = (prod) => {        
-        addToCart({
-            _id: prod._id,
-            size: cartData.size,
-            quantity: cartData.quantity
-        });
+    const addProductToCart = async prod => {
+        setIsAlreadyAddedInCart(false);
+
+        if (cartProducts !== undefined) {
+            let cartProductUpdated = false;
+            let alreadyAddedInCart = false;
+            let cartProductsArray = [];
+
+            cartProducts.forEach(cartProduct => {
+                if (cartProduct.product_id === prod._id) {
+                    if (cartProduct.size === cartData.size) {
+                        if (cartProduct.quantity === cartData.quantity) {
+                            alreadyAddedInCart = true;
+                        } else {
+                            cartProductsArray.push({
+                                ...cartProduct,
+                                quantity: cartData.quantity
+                            });
+
+                            cartProductUpdated = true;
+                        }
+                    }
+                } else {
+                    cartProductsArray.push(cartProduct);
+                }
+            });
+
+            await setIsAlreadyAddedInCart(alreadyAddedInCart);
+
+            if (!alreadyAddedInCart) {
+                if (cartProductUpdated) {
+                    await updateCart(cartProductsArray);
+
+                    Swal.fire({
+                        title: 'Success!',
+                        icon: 'success',
+                        text: 'Product updated in the cart',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    addToCart({
+                        _id: prod._id,
+                        size: cartData.size,
+                        quantity: cartData.quantity
+                    });
+                }
+            }
+        } else {
+            addToCart({
+                _id: prod._id,
+                size: cartData.size,
+                quantity: cartData.quantity
+            });
+        }
     }
 
     return (
@@ -116,6 +175,7 @@ const BigProduct = () => {
                                     <li className="price"><i className="fas fa-rupee-sign"></i>&nbsp;{cartData.price}</li>
                                 </ul>
                             </div>
+                            { isAlreadyAddedInCart && <p className="text-danger mb-0">This product is already added in the cart</p>}
                             <a href="/#" className="add-to-cart btn btn-primary" onClick={e => {e.preventDefault(); addProductToCart(productData)} }>add to cart <i className="fas fa-shopping-cart"></i></a>
                         </div>
                     </div>

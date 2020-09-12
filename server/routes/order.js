@@ -5,6 +5,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const auth = require('./../middlewares/auth');
 const Cart = require('./../models/Cart');
 const Order = require('../models/Order');
+const Countries = require('../models/Countries');
 
 router.post('/create_payment_intent', auth, async (req, res) => {
     const cart = await Cart.findOne({
@@ -13,6 +14,10 @@ router.post('/create_payment_intent', auth, async (req, res) => {
 
     if (cart) {
         let price = 0;
+
+        const country = await Countries.findOne({
+            abbr: req.body.shipping_address.country
+        });
 
         await Order.create({
             order_id: req.body.order_id,
@@ -28,7 +33,7 @@ router.post('/create_payment_intent', auth, async (req, res) => {
                 city: req.body.shipping_address.city,
                 postal_code: req.body.shipping_address.postalcode,
                 region: req.body.shipping_address.region,
-                country: req.body.shipping_address.country
+                country: country.name ? country.name : 'India'
             },
             total_price: price + 50
         });

@@ -234,8 +234,6 @@ const AuthState = (props) => {
             showConfirmButton: false,
             timer: 1500
         });
-
-        // window.location.href = '/';
     }
 
     const showLogin = () => {

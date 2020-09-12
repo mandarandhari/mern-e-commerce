@@ -99,74 +99,36 @@ const OrderDetails = props => {
                         </div>
                         <div className="card-body pl-0 pr-0">
                             <div className="row">
-                                <div className="col-md-6">
-                                    <h4 className="pb-2">Invoice Address</h4>
+                                <div className="col-md-12">
                                     <div className="row">
-                                        <div className="col-md-3">
+                                        <div className="col-md-1">
                                             <span><strong>Name: </strong></span>
                                         </div>
-                                        <div className="col-md-9">
-                                            <p className="mb-2">{ `${order.invoice_address.first_name} ${order.invoice_address.last_name}` }</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-3">
-                                            <span><strong>Email: </strong></span>
-                                        </div>
-                                        <div className="col-md-9">
-                                            <p className="mb-2">{ order.invoice_address.email }</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-3">
-                                            <span><strong>Phone: </strong></span>
-                                        </div>
-                                        <div className="col-md-9">
-                                            <p className="mb-2">{ order.invoice_address.phone }</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-3">
-                                            <span><strong>Address: </strong></span>
-                                        </div>
-                                        <div className="col-md-9">
-                                            <p className="mb-0">{ `${order.invoice_address.address1}, ${order.invoice_address.address2}` }</p>
-                                            <p className="mb-0">{ `${order.invoice_address.city}, ${order.invoice_address.postal_code}` }</p>
-                                            <p className="mb-0">{ `${order.invoice_address.region}, ${order.invoice_address.country}` }</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <h4 className="pb-2">Shipping Address</h4>
-                                    <div className="row">
-                                        <div className="col-md-3">
-                                            <span><strong>Name: </strong></span>
-                                        </div>
-                                        <div className="col-md-9">
+                                        <div className="col-md-11">
                                             <p className="mb-2">{ `${order.shipping_address.first_name} ${order.shipping_address.last_name}` }</p>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="col-md-3">
+                                        <div className="col-md-1">
                                             <span><strong>Email: </strong></span>
                                         </div>
-                                        <div className="col-md-9">
+                                        <div className="col-md-11">
                                             <p className="mb-2">{ order.shipping_address.email }</p>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="col-md-3">
+                                        <div className="col-md-1">
                                             <span><strong>Phone: </strong></span>
                                         </div>
-                                        <div className="col-md-9">
+                                        <div className="col-md-11">
                                             <p className="mb-2">{ order.shipping_address.phone }</p>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="col-md-3">
+                                        <div className="col-md-1">
                                             <span><strong>Address: </strong></span>
                                         </div>
-                                        <div className="col-md-9">
+                                        <div className="col-md-11">
                                             <p className="mb-0">{ `${order.shipping_address.address1}, ${order.shipping_address.address2}` }</p>
                                             <p className="mb-0">{ `${order.shipping_address.city}, ${order.shipping_address.postal_code}` }</p>
                                             <p className="mb-0">{ `${order.shipping_address.region}, ${order.shipping_address.country}` }</p>

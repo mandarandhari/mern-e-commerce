@@ -101,10 +101,11 @@ const CartState = (props) => {
         }
     }
 
-    const removeFromCart = async product__id => {
+    const removeFromCart = async (product__id, product__size) => {
         try {
             const response = await axios.post(`/cart/delete/${state.cart.cart_id}`, {
-                product_id: product__id
+                product_id: product__id,
+                size: product__size
             }, {
                 headers: {
                     'Content-Type': 'application/json'

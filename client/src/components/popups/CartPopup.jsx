@@ -65,39 +65,48 @@ const CartPopup = props => {
 
         if (cartProducts !== undefined) {
             let cartProductUpdated = false;
+            let alreadyAddedInCart = false;
             let cartProductsArray = [];
 
             cartProducts.forEach(cartProduct => {
                 if (cartProduct.product_id === productData._id) {
                     if (cartProduct.size === cartData.size) {
-                        cartProductsArray.push({
-                            ...cartProduct,
-                            quantity: cartData.quantity
-                        });
+                        if (cartProduct.quantity === cartData.quantity) {
+                            alreadyAddedInCart = true;
+                        } else {
+                            cartProductsArray.push({
+                                ...cartProduct,
+                                quantity: cartData.quantity
+                            });
 
-                        cartProductUpdated = true;
+                            cartProductUpdated = true;
+                        }
                     }
                 } else {
                     cartProductsArray.push(cartProduct);
                 }
             });
 
-            if (cartProductUpdated) {
-                await updateCart(cartProductsArray);
+            await setIsAlreadyAddedInCart(alreadyAddedInCart);
 
-                Swal.fire({
-                    title: 'Success!',
-                    icon: 'success',
-                    text: 'Product updated in the cart',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            } else {
-                addToCart({
-                    _id: productData._id,
-                    size: cartData.size,
-                    quantity: cartData.quantity
-                });
+            if (!alreadyAddedInCart) {
+                if (cartProductUpdated) {
+                    await updateCart(cartProductsArray);
+
+                    Swal.fire({
+                        title: 'Success!',
+                        icon: 'success',
+                        text: 'Product updated in the cart',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    addToCart({
+                        _id: productData._id,
+                        size: cartData.size,
+                        quantity: cartData.quantity
+                    });
+                }
             }
         } else {
             addToCart({

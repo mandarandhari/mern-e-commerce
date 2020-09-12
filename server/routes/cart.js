@@ -96,7 +96,7 @@ router.post('/delete/:cart_id', async (req, res) => {
             const cartProducts = [];
 
             cart.products.forEach(product => {
-                if (product.product_id.toString() !== req.body.product_id) {
+                if (product.product_id.toString() !== req.body.product_id || ( product.product_id.toString() === req.body.product_id && product.size !== req.body.size)) {
                     cartProducts.push({
                         product_id: mongoose.Types.ObjectId(product.product_id),
                         title: product.title,

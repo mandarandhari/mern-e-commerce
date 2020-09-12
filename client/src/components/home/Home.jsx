@@ -5,7 +5,6 @@ import Features from './Features';
 import BigProduct from './BigProduct';
 import Products from './Products';
 import Divider from './Divider';
-import NewArrivals from './NewArrivals';
 import CartPopup from '../popups/CartPopup';
 import ProductContext from '../../context/product/ProductContext';
 
@@ -24,7 +23,6 @@ const Home = () => {
             <BigProduct />
             <Products />
             <Divider />
-            <NewArrivals />
             <CartPopup />
         </>
     )

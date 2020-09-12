@@ -43,7 +43,7 @@ const CartProducts = () => {
         }
     }, [cart.products]);
 
-    const minusBtnClicked = async cartProductId => {
+    const minusBtnClicked = async (cartProductId, cartProductSize) => {
         let deleteProduct = false;
 
         await setProductData(prevData => {
@@ -72,13 +72,13 @@ const CartProducts = () => {
         });
 
         if (deleteProduct) {
-            deleteProductBtnClicked(cartProductId)
+            deleteProductBtnClicked(cartProductId, cartProductSize)
         }
     }
 
-    const inputFieldChanged = (cartProductId, quantityValue) => {
+    const inputFieldChanged = (cartProductId, cartProductSize, quantityValue) => {
         if (parseInt(quantityValue) === 0) {
-            deleteProductBtnClicked(cartProductId);
+            deleteProductBtnClicked(cartProductId, cartProductSize);
         } else {
             setProductData(prevData => {
                 let newData = [];
@@ -137,7 +137,7 @@ const CartProducts = () => {
         });
     }
 
-    const deleteProductBtnClicked = productId => {
+    const deleteProductBtnClicked = (productId, productSize) => {
         Swal.fire({
             title: 'Remove from cart',
             icon: 'question',
@@ -148,7 +148,7 @@ const CartProducts = () => {
             cancelButtonText: 'No'
         }).then((result) => {
             if (result.isConfirmed) {
-                removeFromCart(productId);
+                removeFromCart(productId, productSize);
             }
         })
     }
@@ -202,8 +202,8 @@ const CartProducts = () => {
                                         </div>
                                         <div className="col-sm-2">
                                             <div className="product-quantity">
-                                                <div className="minus-btn" onClick={() => minusBtnClicked(product.product_id)}><i className="fa fa-minus"></i></div>
-                                                <input type="text" value={product.quantity} className="quantity" onChange={e => inputFieldChanged(product.product_id, e.target.value)} />
+                                                <div className="minus-btn" onClick={() => minusBtnClicked(product.product_id, product.size)}><i className="fa fa-minus"></i></div>
+                                                <input type="text" value={product.quantity} className="quantity" onChange={e => inputFieldChanged(product.product_id, product.size, e.target.value)} />
                                                 <div className="plus-btn" onClick={() => addBtnClicked(product.product_id)}><i className="fa fa-plus"></i></div>
                                             </div>
                                         </div>
@@ -213,7 +213,7 @@ const CartProducts = () => {
                                         <div className="col-sm-1">
                                             <div className="row">
                                                 <div className="col-sm-12">
-                                                    <button className="btn btn-sm btn-danger" style={{ padding: '6px' }} onClick={() => deleteProductBtnClicked(product.product_id)}><i className="fa fa-trash-alt"></i></button>
+                                                    <button className="btn btn-sm btn-danger" style={{ padding: '6px' }} onClick={() => deleteProductBtnClicked(product.product_id, product.size)}><i className="fa fa-trash-alt"></i></button>
                                                 </div>
                                             </div>
                                         </div>
