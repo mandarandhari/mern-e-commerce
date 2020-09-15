@@ -1,4 +1,7 @@
 const router = require('express').Router();
+const nodemailer = require('nodemailer');
+const ejs = require('ejs');
+const path = require('path');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -6,6 +9,17 @@ const auth = require('./../middlewares/auth');
 const Cart = require('./../models/Cart');
 const Order = require('../models/Order');
 const Countries = require('../models/Countries');
+const Customer = require('../models/Customer');
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.mailtrap.io',
+    port: 465,
+    secure: false,
+    auth: {
+        user: 'adf0269fdd2748',
+        pass: '3e2b9de1f54f99'
+    }
+});
 
 router.post('/create_payment_intent', auth, async (req, res) => {
     const cart = await Cart.findOne({
@@ -17,6 +31,10 @@ router.post('/create_payment_intent', auth, async (req, res) => {
 
         const country = await Countries.findOne({
             abbr: req.body.shipping_address.country
+        });
+
+        cart.products.forEach(product => {
+            price = price + (parseInt(product.price) * parseInt(product.quantity));
         });
 
         await Order.create({
@@ -87,17 +105,67 @@ router.post('/create_payment_intent', auth, async (req, res) => {
 router.post('/place_order', auth, async (req, res) => {
     try {
         if (req.body.transaction_id) {
-            await Order.findOneAndUpdate({
+            const order = await Order.findOneAndUpdate({
                 order_id: req.body.order_id
             }, {
                 transaction_id: req.body.transaction_id,
                 payment_status: 'succeeded',
                 order_status: 'pending'
+            }, {
+                new: true
             });
+
+            const customer = await Customer.findById(order.customer_id);
 
             await Cart.deleteMany({
                 cart_id: req.body.cart_id
             });
+
+            ejs.renderFile(path.join(path.resolve(), '/emails/order.ejs'), 
+            {
+                order: order,
+                frontend_url: process.env.FRONTEND_URL
+            }, (err, data) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    var mainOptions = {
+                        from: "'T-shirt store' shop@tshirtstore.com",
+                        to: customer.email,
+                        subject: 'Order placed',
+                        html: data
+                    };
+
+                    transporter.sendMail(mainOptions, function (err, info) {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
+                }
+            });
+
+            ejs.renderFile(path.join(path.resolve(), '/emails/order_admin.ejs'), {
+                order: order,
+                customer: customer,
+                frontend_url: process.env.FRONTEND_URL
+            }, (err, data) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    var mainOptions = {
+                        from: "'T shirt store' store@tshirtstore.com",
+                        to: 'admin@tshirtstore.com',
+                        subject: 'New order placed',
+                        html: data
+                    };
+
+                    transporter.sendMail(mainOptions, (err, info) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
+                }
+            })
         } else {
             await Order.findOneAndUpdate({
                 order_id: req.body.order_id

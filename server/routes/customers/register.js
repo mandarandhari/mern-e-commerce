@@ -2,8 +2,21 @@ const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const ejs = require('ejs');
+const path = require('path');
 
 const Customer = require('../../models/Customer');
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.mailtrap.io',
+    port: 465,
+    secure: false,
+    auth: {
+        user: 'adf0269fdd2748',
+        pass: '3e2b9de1f54f99'
+    }
+});
 
 router.post(
     '/',
@@ -49,6 +62,52 @@ router.post(
             try {
                 await customer.save();
 
+                ejs.renderFile(path.join(path.resolve(), '/emails/register.ejs'), {
+                    name: req.body.firstName + ' ' + req.body.lastName,
+                    frontend_url: process.env.FRONTEND_URL
+                }, (err, data) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        var mainOptions = {
+                            from: '"T Shirt Store" shop@tshirtstore.com',
+                            to: req.body.email,
+                            subject: 'Registered Successfully!!!',
+                            html: data
+                        };
+
+                        transporter.sendMail(mainOptions, function (err, info) {
+                            if (err) {
+                              console.log(err);
+                            }
+                        });
+                    }
+                });
+
+                ejs.renderFile(path.join(path.resolve(), '/emails/register_admin.ejs'), {
+                    name: req.body.firstName + ' ' + req.body.lastName,
+                    email: req.body.email,
+                    phone: req.body.phone,
+                    frontend_url: process.env.FRONTEND_URL
+                }, (err, data) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        var mainOptions = {
+                            from: '"T Shirt Store" shop@tshirtstore.com',
+                            to: 'admin@tshirtstore.com',
+                            subject: 'New registration',
+                            html: data
+                        }
+                    }
+
+                    transporter.sendMail(mainOptions, (err, info) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
+                });
+
                 const token = await jwt.sign({
                     customer: {
                         _id: customer._id
@@ -73,6 +132,7 @@ router.post(
                 });
             }
         }
-});
+    }
+);
 
 module.exports = router;
