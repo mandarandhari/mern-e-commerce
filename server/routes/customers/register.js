@@ -9,12 +9,12 @@ const path = require('path');
 const Customer = require('../../models/Customer');
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.mailtrap.io',
-    port: 465,
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
     secure: false,
     auth: {
-        user: 'adf0269fdd2748',
-        pass: '3e2b9de1f54f99'
+        user: process.env.EMAIL_AUTH_USER,
+        pass: process.env.EMAIL_AUTH_PASS
     }
 });
 

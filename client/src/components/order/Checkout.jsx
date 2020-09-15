@@ -170,7 +170,7 @@ const Checkout = () => {
                 postalcode: shippingAddress.postalcode,
                 region: shippingAddress.region,
                 country: shippingAddress.country
-            }, _shipping_address);
+            });
 
             history.push('/payment');
         }
