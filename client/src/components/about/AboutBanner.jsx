@@ -8,14 +8,11 @@ const AboutBanner = () => {
                     <nav className="breadcrumb">
                         <ul className="breadcrumb">
                             <li className="breadcrumb-item"><a href="index.html">Home</a></li>
-                            <li className="breadcrumb-item active">Text Page</li>
+                            <li className="breadcrumb-item active">About</li>
                         </ul>
                     </nav>
-                    <h1>Text Page</h1>
-                    <p className="lead">
-                    On this page, you can find examples of the elements that come already prestyled with this template. This
-                    is a simple introductory paragraph.
-                    </p>
+                    <h1>About Us</h1>
+                    <p className="lead">In egestas turpis quam, ut sollicitudin dui malesuada at. Suspendisse sit amet aliquet odio. Sed ac sapien ac libero aliquam iaculis.</p>
                 </div>
             </section>
         </>

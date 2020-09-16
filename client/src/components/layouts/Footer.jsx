@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import logo_e_footer from '../../utils/img/logo-e-footer.png';
 
 const Footer = () => {
@@ -58,9 +60,9 @@ const Footer = () => {
                             <div className="col-lg-3 col-md-6">
                                 <h4>This Template</h4>
                                 <ul className="list-unstyled">
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="text-page.html">Text Page</a></li>
-                                    <li><a href="cart-page.html">Shopping Cart</a></li>
+                                    <li><Link to="/">Home</Link></li>
+                                    <li><Link to="/about-us">About</Link></li>
+                                    <li><Link to="/cart">Shopping Cart</Link></li>
                                 </ul>
                             </div>
                             <div className="col-lg-2 col-md-6">
@@ -85,11 +87,8 @@ const Footer = () => {
                 <div className="copyrights">
                     <div className="container">
                         <div className="row">
-                            <div className="col-md-6">
-                                <p>© 2018 ShirtStore.com. All rights reserved.</p>
-                            </div>
-                            <div className="col-md-6 text-right">
-                                <p>Template By <a href="https://ondrejsvestka.cz/" target="_blank" rel="noopener noreferrer">Ondrej Svestka</a></p>
+                            <div className="col-md-12">
+                                <p>© 2020 ShirtStore.com. All rights reserved.</p>
                             </div>
                         </div>
                     </div>

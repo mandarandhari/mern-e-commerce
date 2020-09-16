@@ -5,10 +5,8 @@ const Intro = () => {
         <>
             <section className="intro">
                 <div className="container text-center">
-                    <h2 className="heading-center">Welcome to the T-shirt store template</h2>
-                    <p className="lead">This template is great for single product shops. It comes with <strong>3 html pages</strong>, <strong>6 colour variants</strong>                and <strong>SASS files</strong> to take the visual configuration even further. All fully-responsive and
-                    based on latest Bootstrap 4.0.0.
-                    </p>
+                    <h2 className="heading-center">Welcome to the T-shirt store</h2>
+                    <p className="lead">Aliquam viverra purus vitae <strong>lorem interdum, quis scelerisque</strong> dui sodales. Pellentesque eu <strong>metus mattis</strong>, iaculis metus quis, cursus lorem. Quisque rutrum erat sagittis massa cursus, sit amet pretium sapien ultrices.</p>
                 </div>
             </section>
         </>

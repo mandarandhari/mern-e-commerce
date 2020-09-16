@@ -31,7 +31,7 @@ const Header = () => {
                     <div className="container">
                         <div className="row">
                             <div className="col-sm-6 text-left">
-                                <p>Free Shipping on orders over 59$</p>
+                                <p>Check our exclusive offers!!!</p>
                             </div>
                             <div className="col-sm-6 text-right">
                                 <p>Customer Service 456-532-342</p>

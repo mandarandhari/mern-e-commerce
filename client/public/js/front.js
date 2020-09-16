@@ -85,31 +85,6 @@ $(document).ready(function () {
     // });
 
     // ------------------------------------------------------- //
-    // Testimonials Slider
-    // ------------------------------------------------------ //
-    $('.testimonials-slider').owlCarousel({
-        loop: true,
-        margin: 20,
-        dots: true,
-        responsiveClass: true,
-        responsive: {
-            0: {
-                items: 1,
-                nav: true
-            },
-            600: {
-                items: 1,
-                nav: false
-            },
-            1000: {
-                items: 1,
-                nav: true,
-                loop: false
-            }
-        }
-    });
-
-    // ------------------------------------------------------- //
     // Contact Form
     // ------------------------------------------------------ //
     // Apply the transform effect on focus
@@ -178,30 +153,6 @@ $(document).ready(function () {
     //     $('.cart-popup-overlay.active').fadeOut().removeClass('active');
     //     $('.cart-popup.active').removeClass('fade-in-up').removeClass('active');
     //     $('body').css('overflow', 'auto');
-    // });
-
-    // ------------------------------------------------------- //
-    // Alternative form show/hide
-    // ------------------------------------------------------ //
-    // $("#another-address").change(function () {
-    //     if (this.checked) {
-    //         $('.shipping-alternative').show();
-    //     } else {
-    //         $('.shipping-alternative').hide();
-    //     }
-    // });
-
-    // ------------------------------------------------------- //
-    // Increase/Reduce product amount
-    // ------------------------------------------------------ //
-    // $('.minus-btn').click(function () {
-
-    //     if (parseInt($('input.quantity').val(), 10) >= 1) {
-    //         $('input.quantity').val(parseInt($('input.quantity').val(), 10) - 1);
-    //     }
-    // });
-    // $('.plus-btn').click(function () {
-    //     $('input.quantity').val(parseInt($('input.quantity').val(), 10) + 1);
     // });
 
     // ------------------------------------------------------ //

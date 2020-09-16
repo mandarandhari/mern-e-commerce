@@ -11,7 +11,7 @@ const Services = () => {
                                 <div className="icon"><i className="fa fa-truck"></i></div>
                                 <div className="text">
                                     <h4>Advanced Shipping</h4>
-                                    <p>Free shipping over 300$</p>
+                                    <p>Free shipping over Rs.300</p>
                                 </div>
                             </div>
                         </div>
@@ -20,7 +20,7 @@ const Services = () => {
                                 <div className="icon"><i className="fa fa-headphones-alt"></i></div>
                                 <div className="text">
                                     <h4>Premium Support</h4>
-                                    <p>Free shipping over 300$</p>
+                                    <p>Free shipping over Rs.300</p>
                                 </div>
                             </div>
                         </div>
@@ -29,7 +29,7 @@ const Services = () => {
                                 <div className="icon"><i className="fa fa-reply"></i></div>
                                 <div className="text">
                                     <h4>30 Day Return</h4>
-                                    <p>Free shipping over 300$</p>
+                                    <p>Free shipping over Rs.300</p>
                                 </div>
                             </div>
                         </div>
