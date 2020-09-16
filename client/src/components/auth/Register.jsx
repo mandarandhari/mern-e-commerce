@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import AuthContext from '../../context/auth/AuthContext';
 
 const Register = () => {
-    const { registerCustomer, registerFormErrors, showRegisterPopup, hideRegister } = useContext(AuthContext);
+    const { registerCustomer, registerFormErrors, showRegisterPopup, hideRegister, showLogin } = useContext(AuthContext);
 
     const [userdata, setUserdata] = useState({
         firstName: '',
@@ -44,6 +44,12 @@ const Register = () => {
         e.preventDefault();
 
         await registerCustomer(userdata);
+    }
+
+    const loginLinkClicked = () => {
+        hideRegister();
+
+        showLogin();
     }
 
     return (
@@ -108,6 +114,9 @@ const Register = () => {
                                             </div>
                                             <div className="col-sm-12 mt-3 text-center">
                                                 <button id="register-submit" type="submit" className="btn btn-primary btn-template btn-lg">Register</button>
+                                            </div>
+                                            <div className="col-sm-12 mt-5 text-center">
+                                                <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={loginLinkClicked}>Already have an account? Click here to login!</p>
                                             </div>
                                         </div>
                                     </div>

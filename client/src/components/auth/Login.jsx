@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import AuthContext from '../../context/auth/AuthContext';
 
 const Login = () => {
-    const { loginCustomer, loginFormErrors, showLoginPopup, hideLogin } = useContext(AuthContext);
+    const { loginCustomer, loginFormErrors, showLoginPopup, hideLogin, showRegister, showForgotPassword } = useContext(AuthContext);
 
     const history = useHistory();
 
@@ -55,6 +55,18 @@ const Login = () => {
         hideLogin();
     }
 
+    const registerLinkClicked = () => {
+        hideLogin();
+
+        showRegister();
+    }
+
+    const forgotPasswordLinkClicked = () => {
+        hideLogin();
+
+        showForgotPassword();
+    }
+
     return (
         <>
             <div id="login-popup" className='cart-popup-overlay'>
@@ -98,6 +110,10 @@ const Login = () => {
                                             </div>
                                             <div className="col-sm-12 mt-3 text-center">
                                                 <button id="login-submit" type="submit" className="btn btn-primary btn-template btn-lg">Login</button>
+                                            </div>
+                                            <div className="col-sm-12 mt-5 text-center">
+                                                <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={registerLinkClicked}>Don't have an account? Register here!</p>
+                                                <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={forgotPasswordLinkClicked}>Forgot password? Click here!</p>
                                             </div>
                                         </div>
                                     </div>

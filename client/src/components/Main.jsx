@@ -12,9 +12,11 @@ import Checkout from './order/Checkout';
 import Payment from './order/Payment';
 import MyOrders from './auth/MyOrders';
 import OrderDetails from './auth/OrderDetails';
+import ForgotPassword from './auth/ForgotPassword';
+import ResetPassword from './auth/ResetPassword';
 
 const Main = props => {
-    const { getCustomer, isLoggedIn, showRegisterPopup, showLoginPopup, showProfilePopup } = useContext(AuthContext);
+    const { getCustomer, isLoggedIn, showRegisterPopup, showLoginPopup, showProfilePopup, showForgotPasswordPopup, showResetPasswordPopup } = useContext(AuthContext);
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -65,6 +67,8 @@ const Main = props => {
             {showLoginPopup && <Login />}
             {showRegisterPopup && <Register />} 
             {showProfilePopup && <Profile />}
+            {showForgotPasswordPopup && <ForgotPassword />}
+            {showResetPasswordPopup && <ResetPassword />}
         </>
     )
 }

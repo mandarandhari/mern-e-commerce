@@ -21,7 +21,12 @@ import {
     UPDATE_PROFILE_SUCCESS,
     UPDATE_PROFILE_FAILURE,
     SET_MY_ORDERS,
-    SET_ORDER_DETAILS
+    SET_ORDER_DETAILS,
+    SHOW_FORGOT_PASSWORD_POPUP,
+    HIDE_FORGOT_PASSWORD_POPUP,
+    SET_FORGOT_PASSWORD_ERROR,
+    SHOW_RESET_PASSWORD_POPUP,
+    HIDE_RESET_PASSWORD_POPUP
 } from '../../Types';
 
 const AuthState = (props) => {
@@ -58,9 +63,14 @@ const AuthState = (props) => {
             password: '',
             invalid: ''
         },
+        forgotPasswordEmailError: '',
+        passwordResetEmailSent: false,
         showRegisterPopup: false,
         showLoginPopup: false,
-        showProfilePopup: false
+        showProfilePopup: false,
+        showForgotPasswordPopup: false,
+        showResetPasswordPopup: false,
+        resetPasswordCustomerId: null
     }
 
     const [state, dispatch] = useReducer(AuthReducer, initialState);
@@ -298,6 +308,112 @@ const AuthState = (props) => {
         })
     }
 
+    const showForgotPassword = () => {
+        dispatch({
+            type: SHOW_FORGOT_PASSWORD_POPUP
+        });
+    }
+
+    const hideForgotPassword = () => {
+        dispatch({
+            type: HIDE_FORGOT_PASSWORD_POPUP
+        });
+    }
+
+    const forgotPassword = async email => {
+        try {
+            const response = await axios.post('/reset-password', {
+                email: email
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.data.status) {
+                Swal.fire({
+                    title: 'Success!',
+                    icon: 'success',
+                    text: 'Password reset email has been sent to you',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+
+                hideForgotPassword();
+            } else {
+                dispatch({
+                    type: SET_FORGOT_PASSWORD_ERROR,
+                    payload: response.data.errors[0].msg
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const showResetPassword = async token => {
+        try {
+            const response = await axios.get('/reset-password/' + token, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.data.status) {
+                dispatch({
+                    type: SHOW_RESET_PASSWORD_POPUP,
+                    payload: response.data.customer_id
+                });
+            } else {
+                return false
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const hideResetPassword = () => {
+        dispatch({
+            type: HIDE_RESET_PASSWORD_POPUP
+        });
+    }
+
+    const resetPassword = async passwords => {
+        try {
+            const response = await axios.put('/reset-password', {
+                id: state.resetPasswordCustomerId,
+                password: passwords.password,
+                confirmPassword: passwords.confirmPassword
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.data.status) {
+                Swal.fire({
+                    title: 'Success!',
+                    icon: 'success',
+                    text: 'Password has been reset successfully',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    icon: 'error',
+                    text: 'Something went wrong',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+
+            hideResetPassword();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const getOrders = async () => {
         try {
             let customerId = state.customer.id.length ? state.customer.id : ( !!localStorage.getItem('customer') ? JSON.parse(localStorage.getItem('customer')).id : '' );
@@ -367,7 +483,16 @@ const AuthState = (props) => {
                 hideProfile,
                 updateCustomer,
                 getOrders,
-                getOrderByOrderId
+                getOrderByOrderId,
+                showForgotPasswordPopup: state.showForgotPasswordPopup,
+                forgotPasswordEmailError: state.forgotPasswordEmailError,
+                showForgotPassword,
+                hideForgotPassword,
+                forgotPassword,
+                showResetPasswordPopup: state.showResetPasswordPopup,
+                showResetPassword,
+                hideResetPassword,
+                resetPassword
             }}>{props.children}</AuthContext.Provider>
         </>
     )

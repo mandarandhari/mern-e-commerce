@@ -14,7 +14,10 @@ import {
     UPDATE_PROFILE_SUCCESS,
     UPDATE_PROFILE_FAILURE,
     SET_MY_ORDERS,
-    SET_ORDER_DETAILS
+    SET_ORDER_DETAILS,
+    SHOW_FORGOT_PASSWORD_POPUP,
+    HIDE_FORGOT_PASSWORD_POPUP,
+    SET_FORGOT_PASSWORD_ERROR, SHOW_RESET_PASSWORD_POPUP, HIDE_RESET_PASSWORD_POPUP
 } from "../../Types";
 
 export default (state, action) => {
@@ -118,6 +121,39 @@ export default (state, action) => {
             return {
                 ...state,
                 order_details: action.payload
+            }
+
+        case SHOW_FORGOT_PASSWORD_POPUP:
+            return {
+                ...state,
+                showForgotPasswordPopup: true
+            }
+
+        case HIDE_FORGOT_PASSWORD_POPUP:
+            return {
+                ...state,
+                showForgotPasswordPopup: false,
+                forgotPasswordEmailError: ''
+            }
+
+        case SET_FORGOT_PASSWORD_ERROR:
+            return {
+                ...state,
+                forgotPasswordEmailError: action.payload
+            }
+
+        case SHOW_RESET_PASSWORD_POPUP:
+            return {
+                ...state,
+                showResetPasswordPopup: true,
+                resetPasswordCustomerId: action.payload
+            }
+
+        case HIDE_RESET_PASSWORD_POPUP:
+            return {
+                ...state,
+                showResetPasswordPopup: false,
+                resetPasswordCustomerId: null
             }
 
         case CUSTOMER_LOGOUT:

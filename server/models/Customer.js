@@ -22,6 +22,16 @@ const customerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    password_reset_token: {
+        type: String,
+        required: false,
+        default: null
+    },
+    is_token_used: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
     created_at: {
         type: Date,
         default: Date.now()
