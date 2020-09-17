@@ -1,8 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import AuthContext from '../../context/auth/AuthContext';
 
 const Register = () => {
     const { registerCustomer, registerFormErrors, showRegisterPopup, hideRegister, showLogin } = useContext(AuthContext);
+
+    const history = useHistory();
 
     const [userdata, setUserdata] = useState({
         firstName: '',
@@ -43,7 +47,12 @@ const Register = () => {
     const formSubmit = async e => {
         e.preventDefault();
 
-        await registerCustomer(userdata);
+        const response = await registerCustomer(userdata);
+
+        if (response && !!localStorage.getItem('redirect_to')) {
+        console.log(localStorage.getItem('redirect_to'));
+            history.push(localStorage.getItem('redirect_to'));
+        }
     }
 
     const loginLinkClicked = () => {

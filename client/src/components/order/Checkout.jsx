@@ -228,7 +228,7 @@ const Checkout = () => {
                                         lineHeight: '60px',
                                         borderRadius: '10px',
                                         fontSize: '1.2rem',
-                                        fontWeight: 400,
+                                        fontWeight: 300,
                                         boxShadow: 'none'
                                     }}  onChange={shippingAddressFieldChanged} value={shippingAddress.country}>
                                         <option value="">Select Country</option>

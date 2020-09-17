@@ -10,7 +10,7 @@ const OrderDetails = props => {
 
     useEffect(() => {
         getOrderByOrderId(props.orderId);
-    }, [])
+    }, [props.orderId, getOrderByOrderId])
 
     useEffect(() => {
         setOrder(order_details);

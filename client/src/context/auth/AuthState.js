@@ -109,6 +109,8 @@ const AuthState = (props) => {
                 showConfirmButton: false,
                 timer: 1500
             });
+
+            return true;
         } catch(errors) {
             if (errors.response.status === 400) {
                 errors.response.data.errors.forEach(error => {
@@ -120,6 +122,8 @@ const AuthState = (props) => {
                     payload: errors_res
                 });
             }
+
+            return false;
         }
     }
 
@@ -244,6 +248,8 @@ const AuthState = (props) => {
             showConfirmButton: false,
             timer: 1500
         });
+
+        return true;
     }
 
     const showLogin = () => {

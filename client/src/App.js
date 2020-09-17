@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -43,6 +43,7 @@ function App() {
                     <PrivateRoute exact path="/payment" component={Main} />
                     <PrivateRoute exact path="/my-orders" component={Main} />
                     <PrivateRoute exact path="/order/:id" component={Main} />
+                    <Redirect from="*" to="/" />
                   </Switch>
                 </BrowserRouter>
               </Elements>

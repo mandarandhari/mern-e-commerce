@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+
 import logo_e from '../../utils/img/logo-e.png';
 import AuthContext from '../../context/auth/AuthContext';
 import CartContext from '../../context/cart/CartContext';
@@ -12,6 +13,8 @@ const Header = () => {
 
     const location = useLocation();
 
+    const history = useHistory();
+
     useEffect(() => {
         getCartProducts();
     }, []);
@@ -23,6 +26,16 @@ const Header = () => {
             setProductsCount(0);
         }
     }, [cart, cart.products]);
+
+    const logout = async e => {
+        e.preventDefault();
+
+        const response = await logoutCustomer();
+
+        if (response) {
+            history.push('/');
+        }
+    }
 
     return (
         <>
@@ -76,7 +89,7 @@ const Header = () => {
                                                         <Link to="/my-orders">My Orders</Link>
                                                     </li>
                                                     <li className="list-inline-item" style={{ width: '100%' }}>
-                                                        <a href="/#" onClick={() => logoutCustomer()}>Logout</a>
+                                                        <a href="/#" onClick={logout}>Logout</a>
                                                     </li>
                                                 </>
                                             )
