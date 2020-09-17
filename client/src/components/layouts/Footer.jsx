@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import logo_e_footer from '../../utils/img/logo-e-footer.png';
 
 const Footer = () => {
+    const newsletterFormSubmit = e => {
+        e.preventDefault();
+    }
+
     return (
         <>
             <footer>
@@ -68,15 +72,15 @@ const Footer = () => {
                             <div className="col-lg-2 col-md-6">
                                 <h4>Our Services</h4>
                                 <ul className="list-unstyled">
-                                    <li><a href="/#">Page Link</a></li>
-                                    <li><a href="/#">Page Link</a></li>
-                                    <li><a href="/#">Page Link</a></li>
+                                    <li><Link to="/#">Page Link</Link></li>
+                                    <li><Link to="/#">Page Link</Link></li>
+                                    <li><Link to="/#">Page Link</Link></li>
                                 </ul>
                             </div>
                             <div className="col-lg-3 col-md-6">
                                 <h4>Newsletter</h4>
                                 <p>Lorem ipsum amet, consectetur adipiscing elit</p>
-                                <form id="newsletter-form" action="#">
+                                <form id="newsletter-form" action="#" onSubmit={newsletterFormSubmit}>
                                     <input id="usermail" type="email" name="useremail" placeholder="Enter Your Email" />
                                     <button type="submit">Subscribe <i className="fa fa-circle"></i></button>
                                 </form>

@@ -21,6 +21,7 @@ import ProductState from './context/product/ProductState';
 import CartState from './context/cart/CartState';
 import OrderState from './context/order/OrderState';
 import PrivateRoute from './components/PrivateRoutes';
+import ScrollTop from './components/ScrollTop';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
@@ -33,6 +34,7 @@ function App() {
             <OrderState>
               <Elements stripe={stripePromise}>
                 <BrowserRouter>
+                  <ScrollTop />
                   <Switch>
                     <Route exact path="/" component={Main} />
                     <Route exact path="/about-us" component={Main} />

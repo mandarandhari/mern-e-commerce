@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+
 import Home from './home/Home';
 import About from './about/About';
 import Cart from './cart/Cart';
@@ -23,12 +24,6 @@ const Main = props => {
             getCustomer();
         }
     }, []);
-
-    useEffect(() => {
-        setTimeout(() => {
-            window.scrollTo(0, 0);
-        }, 2000)
-    });
 
     return (
         <>
