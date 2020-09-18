@@ -28,7 +28,7 @@ const Products = () => {
                 <div className="container text-center">
                     <h2 className="heading-center">Our Products</h2>
                     {
-                        productsData.length && (
+                        productsData.length ? (
                             <OwlCarousel 
                                 loop
                                 className="owl-theme text-left products-slider"
@@ -94,6 +94,13 @@ const Products = () => {
                                 )
                             })}
                             </OwlCarousel>
+                        ) : 
+                        (
+                            <>
+                                <div className="container">
+                                    <p className="text-center">Products are not available</p>
+                                </div>
+                            </>
                         )
                     }
                 </div>

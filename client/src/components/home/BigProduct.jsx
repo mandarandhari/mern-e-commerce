@@ -20,15 +20,17 @@ const BigProduct = () => {
     const [ isAlreadyAddedInCart, setIsAlreadyAddedInCart ] = useState(false);
 
     useEffect(() => {
-        setProductData({
-            ...productData,
-            _id: banner_product._id,
-            title: banner_product.title,
-            description: banner_product.description,
-            size: banner_product.size,
-            image_url: banner_product.image_url,
-            price: banner_product.price
-        });
+        if (Object.keys(banner_product).length) {
+            setProductData({
+                ...productData,
+                _id: banner_product._id,
+                title: banner_product.title,
+                description: banner_product.description,
+                size: banner_product.size,
+                image_url: banner_product.image_url,
+                price: banner_product.price
+            });
+        }
     }, [banner_product]);
 
     useEffect(() => {
@@ -146,6 +148,7 @@ const BigProduct = () => {
 
     return (
         <>
+            {Object.keys(productData).length ? (
             <section className="big-product" id="big-product-view">
                 <div className="container">
                     <div className="row">
@@ -181,6 +184,7 @@ const BigProduct = () => {
                     </div>
                 </div>
             </section>
+            ) : null}
         </>
     )
 }

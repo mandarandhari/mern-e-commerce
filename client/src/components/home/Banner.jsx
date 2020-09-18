@@ -3,7 +3,7 @@ import hero_shirt from '../../utils/img/hero-shirt.jpg';
 
 const Banner = () => {
     const scrollToBigProduct = () => {
-        document.querySelector("#big-product-view").scrollIntoView({ behavior: 'smooth'});
+        document.querySelector(".products").scrollIntoView({ behavior: 'smooth'});
     }
 
     return (

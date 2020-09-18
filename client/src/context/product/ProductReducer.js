@@ -5,7 +5,7 @@ export default (state, action) => {
         case GET_PRODUCTS_SUCCESS:
             return {
                 ...state,
-                banner_product: action.payload.product_on_banner,
+                banner_product: action.payload.product_on_banner !== null ? action.payload.product_on_banner : {},
                 products: action.payload.products
             }
 

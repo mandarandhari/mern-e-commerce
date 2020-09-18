@@ -16,9 +16,8 @@ router.get('/', async (req, res) => {
         });
 
         const products = await Product.find({
-            show_on_banner: {
-                $ne: true
-            }
+            show_on_banner: false,
+            is_deleted: false
         }, {
             title: 1,
             description: 1,
