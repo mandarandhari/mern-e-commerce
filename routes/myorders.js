@@ -1,8 +1,9 @@
 const router = require('express').Router();
+const path = require('path');
 
-const auth = require('../middlewares/auth');
-const Customer = require('../models/Customer');
-const Order = require('../models/Order');
+const auth = require(path.join(__dirname, '../middlewares/auth'));
+const Customer = require(path.join(__dirname, '../models/Customer'));
+const Order = require(path.join(__dirname, '../models/Order'));
 
 router.get('/:customer_id', auth, async (req, res) => {
     if (req.params.customer_id) {

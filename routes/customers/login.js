@@ -2,8 +2,9 @@ const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
-const Customer = require('../../models/Customer');
+const Customer = require(path.join(__dirname, './../../models/Customer'));
 
 router.post(
     '/',

@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 const ejs = require('ejs');
 const path = require('path');
 
-const Customer = require('../../models/Customer');
+const Customer = require(path.join(__dirname, '../../models/Customer'));
 
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,

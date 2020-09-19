@@ -5,11 +5,11 @@ const path = require('path');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-const auth = require('./../middlewares/auth');
-const Cart = require('./../models/Cart');
-const Order = require('../models/Order');
-const Countries = require('../models/Countries');
-const Customer = require('../models/Customer');
+const auth = require(path.join(__dirname, './../middlewares/auth'));
+const Cart = require(path.join(__dirname, './../models/Cart'));
+const Order = require(path.join(__dirname, '../models/Order'));
+const Countries = require(path.join(__dirname, '../models/Countries'));
+const Customer = require(path.join(__dirname, '../models/Customer'));
 
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,

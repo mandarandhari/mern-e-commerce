@@ -1,7 +1,8 @@
 const router = require('express').Router();
+const path = require('path');
 
-const Customer = require('../../models/Customer');
-const auth = require('../../middlewares/auth');
+const Customer = require(path.join(__dirname, './../../models/Customer'));
+const auth = require(path.join(__dirname, './../../middlewares/auth'));
 
 router.get('/', auth, async (req, res) => {
     try {

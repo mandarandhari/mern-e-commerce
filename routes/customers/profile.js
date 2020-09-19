@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
+const path = require('path');
 
-const auth = require('../../middlewares/auth');
-const Customer = require('../../models/Customer');
+const auth = require(path.join(__dirname, '../../middlewares/auth'));
+const Customer = require(path.join(__dirname, '../../models/Customer'));
 
 router.post(
     '/',

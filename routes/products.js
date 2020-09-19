@@ -1,6 +1,7 @@
 const router = require('express').Router();
+const path = require('path');
 
-const Product = require('../models/Product');
+const Product = require( path.join(__dirname, '../models/Product'));
 
 router.get('/', async (req, res) => {
     try {

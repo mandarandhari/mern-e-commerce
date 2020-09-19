@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
+const path = require('path');
 
-const Product = require('../models/Product');
-const Cart = require('../models/Cart');
+const Product = require(path.join(__dirname, '../models/Product'));
+const Cart = require(path.join(__dirname, '../models/Cart'));
 
 router.post('/', async (req, res) => {
     try {
