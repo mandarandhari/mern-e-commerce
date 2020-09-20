@@ -3,7 +3,7 @@ const router = require('express').Router();
 const Countries = require('../models/Countries');
 
 router.post('/', async (req, res) => {
-    return res.json('Countries already added');
+    // return res.json('Countries already added');
 
     await Countries.insertMany([
         {
