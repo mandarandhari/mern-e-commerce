@@ -37,7 +37,7 @@ const Payment = () => {
     const [ showSpinner, setShowSpinner ] = useState(false);
 
     useEffect(() => {
-        if (!isLoggedIn || cookies.cart_id === undefined || Object.keys(JSON.parse(localStorage.getItem('invoice_address'))).length === 0) {
+        if (!isLoggedIn || cookies.cart_id === undefined || (!!localStorage.getItem('shipping_address') && Object.keys(JSON.parse(localStorage.getItem('shipping_address'))).length === 0)) {
             history.push('/');
         } else {
             createPaymentIntent();
