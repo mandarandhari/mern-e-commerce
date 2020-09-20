@@ -2120,7 +2120,7 @@ section.cart .total-price h3 {
 }
 
 @media(max-width: 650px) {
-	.shipping .form-holder input, .login-main input, .register-main input, .profile-main input, .forgot-password-main input, .reset-password-main input {
+	.shipping .form-holder input, .login-main input, .register-main input, .profile-main input, .forgot-password-main input, .reset-password-main input, .selectpicker1 {
 		height: 43px;
 		line-height: 43px;
 		font-size: 15px;

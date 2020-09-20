@@ -8,11 +8,12 @@ import AuthContext from '../../context/auth/AuthContext';
 
 const STRIPE_ELEMENT_STYLE ={
     padding: "0 20px",
-    height: '60px',
+    height: window.innerWidth < 800 ? '43px' : '60px',
     borderRadius: '10px',
     boxShadow: 'none',
     backgroundColor: '#fff',
-    border: '1px solid #ced4da'
+    border: '1px solid #ced4da',
+    fontFamily: "'Open Sans', sans-serif"
 }
 
 const Payment = () => {
@@ -158,7 +159,7 @@ const Payment = () => {
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="row">
-                                    <div className="col-sm-6 ml-3 mr-3" style={STRIPE_ELEMENT_STYLE}>
+                                    <div className={window.innerWidth < 800 ? "col-sm-6 col-md-12 ml-3 mr-3" : "col-sm-6 ml-3 mr-3"} style={STRIPE_ELEMENT_STYLE}>
                                         <CardNumberElement options={{
                                             iconStyle: 'solid',
                                             elements: {
@@ -173,8 +174,8 @@ const Payment = () => {
                                             },
                                             style: {
                                                 base: {
-                                                    lineHeight: '60px',
-                                                    fontSize: '16px',
+                                                    lineHeight: window.innerWidth < 800 ? '43px' : '60px',
+                                                    fontSize: window.innerWidth < 800 ? '15px' : '16px',
                                                     fontWeight: 300,
                                                     color: '#495057',
                                                     fontFamily: '"Open Sans", sans-serif'
@@ -187,12 +188,12 @@ const Payment = () => {
                                         }} onChange={cardNumberElementChanged} />
                                         { cardErrors.cardNumber.length ? <p className="text-danger">{cardErrors.cardNumber}</p> : null }
                                     </div>
-                                    <div className="col-sm-3 mr-3" style={STRIPE_ELEMENT_STYLE}>
+                                    <div className={window.innerWidth < 800 ? "col-sm-6 col-md-12 ml-3 mr-3" : "col-sm-3 mr-3"} style={STRIPE_ELEMENT_STYLE}>
                                         <CardExpiryElement options={{
                                             style: {
                                                 base: {
-                                                    lineHeight: '60px',
-                                                    fontSize: '16px',
+                                                    lineHeight: window.innerWidth < 800 ? '43px' : '60px',
+                                                    fontSize: window.innerWidth < 800 ? '15px' : '16px',
                                                     fontWeight: 300,
                                                     color: '#495057',
                                                     fontFamily: '"Open Sans", sans-serif'
@@ -205,12 +206,12 @@ const Payment = () => {
                                         }} onChange={cardExpiryChanged} />
                                         { cardErrors.cardExpiry.length ? <p className="text-danger">{cardErrors.cardExpiry}</p> : null }
                                     </div>
-                                    <div className="col-sm-2" style={STRIPE_ELEMENT_STYLE}>
+                                    <div className={window.innerWidth < 800 ? "col-sm-6 col-md-12 ml-3 mr-3" : "col-sm-2"} style={STRIPE_ELEMENT_STYLE}>
                                         <CardCvcElement options={{
                                             style: {
                                                 base: {
-                                                    lineHeight: '60px',
-                                                    fontSize: '16px',
+                                                    lineHeight: window.innerWidth < 800 ? '43px' : '60px',
+                                                    fontSize: window.innerWidth < 800 ? '15px' : '16px',
                                                     fontWeight: 300,
                                                     color: '#495057',
                                                     fontFamily: '"Open Sans", sans-serif'
@@ -227,7 +228,7 @@ const Payment = () => {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-md-12 text-right">
+                            <div className={window.innerWidth < 800 ? "col-md-12 text-center" : "col-md-12 text-right"}>
                                 <button id="shipping-submit" type="submit" className="oder-now btn btn-primary btn-template btn-lg" onClick={orderNowBtnClicked} disabled={ showSpinner ? `disabled` : false }>{ showSpinner ? <i className="fa fa-spinner fa-spin"></i> : null } Order Now <i className="fa fa-truck"></i></button>
                             </div>
                         </div>
