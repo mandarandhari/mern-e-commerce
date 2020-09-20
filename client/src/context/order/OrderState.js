@@ -38,7 +38,7 @@ const OrderState = props => {
     }, [ cart ]);
 
     const addAddresses = shippingAddress => {
-        localStorage.setItem('invoice_address', JSON.stringify(shippingAddress));
+        localStorage.setItem('shipping_address', JSON.stringify(shippingAddress));
 
         dispatch({
             type: ADD_ADDRESS,
@@ -99,7 +99,6 @@ const OrderState = props => {
             getCartProducts();
             removeCookie('cart_id');
             removeCookie('order_id');
-            localStorage.removeItem('invoice_address');
             localStorage.removeItem('shipping_address');
         }
 
