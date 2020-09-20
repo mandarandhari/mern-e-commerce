@@ -2,12 +2,14 @@ const express = require('express');
 const connectDB = require('./config/db');
 const path = require('path');
 const serveStatic = require('serve-static');
+const cors = require('cors');
 
 const app = express();
 
 connectDB();
 
 app.use(express.json({ extended: true }));
+app.use(cors());
 
 if (process.env.NODE_ENV === 'production') {
     app.use(serveStatic(path.join(__dirname, 'client', 'build')));
