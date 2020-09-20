@@ -9,13 +9,13 @@ connectDB();
 
 app.use(express.json({ extended: true }));
 
-if (process.env.NODE_ENV === 'production') {
-    app.use(serveStatic(path.join(__dirname, 'client', 'build')));
+// if (process.env.NODE_ENV === 'production') {
+//     app.use(serveStatic(path.join(__dirname, 'client', 'build')));
 
-    app.get('/*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-    });
-}
+//     app.get('/*', (req, res) => {
+//         res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+//     });
+// }
 
 app.use('/register', require(path.join(__dirname, './routes/customers/register')));
 app.use('/login', require(path.join(__dirname, './routes/customers/login')));
