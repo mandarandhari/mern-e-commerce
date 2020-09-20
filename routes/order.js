@@ -117,7 +117,7 @@ router.post('/place_order', auth, async (req, res) => {
 
             const customer = await Customer.findById(order.customer_id);
 
-            await Cart.deleteMany({
+            await Cart.deleteOne({
                 cart_id: req.body.cart_id
             });
 
