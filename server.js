@@ -8,7 +8,7 @@ const app = express();
 connectDB();
 
 app.use(express.json({ extended: true }));
-app.use(serveStatic(__dirname + '/dist'));
+app.use(serveStatic(__dirname + '/client/build'));
 
 app.use('/register', require(path.join(__dirname, './routes/customers/register')));
 app.use('/login', require(path.join(__dirname, './routes/customers/login')));
