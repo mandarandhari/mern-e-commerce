@@ -71,22 +71,9 @@ router.get('/:cart_id', async (req, res) => {
         });
 
         if (cart) {
-            let products_arr_ids = [];
-
-            cart.products.forEach(prod => {
-                products_arr_ids.push(mongoose.Types.ObjectId(prod.product_id));
-            })
-
-            const products = await Product.find({
-                _id: {
-                    $in: products_arr_ids
-                },
-                is_deleted: false
-            });
-
             return res.status(200).json({
                 cart_id: req.params.cart_id,
-                products: products
+                products: cart.products
             });
         } else {
             return res.status(200).json({});
