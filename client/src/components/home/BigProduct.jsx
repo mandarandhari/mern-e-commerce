@@ -20,7 +20,7 @@ const BigProduct = () => {
     const [ isAlreadyAddedInCart, setIsAlreadyAddedInCart ] = useState(false);
 
     useEffect(() => {
-        if (Object.keys(banner_product).length) {
+        if (banner_product && Object.keys(banner_product).length) {
             setProductData({
                 ...productData,
                 _id: banner_product._id,

@@ -292,7 +292,7 @@ const AuthState = (props) => {
 
             localStorage.setItem('customer', JSON.stringify(response.data));
         } catch (errors) {
-            if (errors.response.status === 401) {
+            if (errors.response.status && errors.response.status === 401) {
                 logoutCustomer();
             }
 
