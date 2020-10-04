@@ -3,9 +3,11 @@ import { useLocation } from 'react-router-dom';
 
 export default function ScrollTop() {
     const { pathname } = useLocation();
-    
+
     useEffect(() => {
-        document.querySelector('.header').scrollIntoView({ behavior: 'smooth' });
+        if (document.querySelector('.header')) {
+            document.querySelector('.header').scrollIntoView({ behavior: 'smooth' });
+        }
     }, [ pathname ]);
 
     return null;
